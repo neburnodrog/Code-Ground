@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Box from '@material-ui/core/Box';
 import NavBar from './ui-components/NavBar';
+import { Route } from 'react-router-dom';
 
 function App() {
   return (
-    <Box>
+    <div>
       <NavBar />
-    </Box>
+    </div>
   );
 }
 

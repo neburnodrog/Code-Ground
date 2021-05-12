@@ -5,7 +5,7 @@
   "files.insertFinalNewline": true,
   "html.format.indentHandlebars": true,
   "html.format.enable": true,
-  "[javascript, html, typescript]": {
+  "[javascript, html, typescript, json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
