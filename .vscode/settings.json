@@ -1,0 +1,11 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "files.insertFinalNewline": true,
+  "html.format.indentHandlebars": true,
+  "html.format.enable": true,
+  "[javascript, html, typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
