@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import NavBar from './UI-Components/NavBar/NavBar';
 import Home from './UI-Components/Home/Home';
 import Profile from './UI-Components/Profile/Profile';
 import CodeGround from './CodeGround/CodeGround';
+import NotFound from './UI-Components/NotFound';
 
 // ICONS
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -17,9 +17,12 @@ function App() {
     <div>
       <NavBar />
 
-      <Route exact path="/" component={Home} />
-      <Route exact path="/profile/:id" component={Profile} />
-      <Route exact path="/code-ground/:id" component={CodeGround} />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/code-ground" component={CodeGround} />
+        <Route component={NotFound} />
+      </Switch>
     </div>
   );
 }
