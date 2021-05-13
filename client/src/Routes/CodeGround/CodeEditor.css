@@ -1,0 +1,10 @@
+.cm-s-material-ocean.CodeMirror {
+  /* background-color: #050a30; */
+  height: 100% !important;
+}
+
+.code-mirror-wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+  margin: 0em 0.1em 0.2em 0.1em;
+}

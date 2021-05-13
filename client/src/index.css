@@ -11,6 +11,7 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background: #050a30; */
   background: #000211;
   color: #f4f6fc;
 }
@@ -33,4 +34,15 @@ h5,
 h6,
 p {
   margin: 0;
+}
+
+.profile-icon {
+  font-size: 1.5em;
+}
+
+.profile-icon:hover {
+  border-radius: 50%;
+  box-shadow: 0px 0px 3px 3px #233dff;
+  transition: 1s;
+  color: #f4f6fc;
 }

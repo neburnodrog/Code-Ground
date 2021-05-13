@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import Nav from './Nav';
-import DropDown from './DropDown';
+import './NavBar.css';
+import NavRight from './NavRight';
+import NavLeft from './NavLeft';
 
 const Navbar = styled.nav`
+  /* background: #000211; */
   background: #050a30;
+  max-height: 5%;
   color: #f4f6fc;
   display: flex;
   align-items: center;
@@ -14,17 +16,14 @@ const Navbar = styled.nav`
 
 const Title = styled.h2`
   color: #f4f6fc;
-  margin-left: 15vw;
 `;
 
 export default function NavBar() {
   return (
     <Navbar>
-      <Link to="/">
-        <DropDown />
-      </Link>
-      <Title>Code Grounds</Title>
-      <Nav />
+      <NavLeft />
+      <Title>Code Ground</Title>
+      <NavRight />
     </Navbar>
   );
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import NavBar from './UI-Components/NavBar/NavBar';
-import Home from './UI-Components/Home/Home';
-import Profile from './UI-Components/Profile/Profile';
-import CodeGround from './CodeGround/CodeGround';
-import NotFound from './UI-Components/NotFound';
+import NavBar from './Components/NavBar/NavBar';
+import Home from './Routes/Home';
+import Profile from './Routes/Profile';
+import CodeGround from './Routes/CodeGround/CodeGround';
+import NotFound from './Routes/NotFound';
 
 // ICONS
 import { library } from '@fortawesome/fontawesome-svg-core';
