@@ -1,12 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
+import { CodeGround } from './CodeGround';
 
 const userSchema = new Schema(
   {
+    _id: Types.ObjectId,
     username: {
       type: String,
       unique: true,
       required: true,
-      minLength: 3,
       maxLength: 50,
       trim: true,
     },
@@ -36,11 +37,44 @@ const userSchema = new Schema(
       },
       cloudinaryId: { type: String },
     },
-    favourites: [{ type: Schema.Types.ObjectId, ref: 'Store' }],
+    favourites: [
+      {
+        type: Types.ObjectId,
+        ref: 'CodeGround',
+      },
+    ],
+    codeGrounds: [
+      {
+        type: Types.ObjectId,
+        ref: 'CodeGround',
+      },
+    ],
   },
   { timestamps: true },
 );
 
-const User = model('User', userSchema);
+export interface User extends Document {
+  username: string;
+  password: string;
+  email: string;
+  role: string;
+  avatar: {
+    originalname: string;
+    path: string;
+    cloudinaryId: string;
+  };
+  favourites: Types.Array<Types.ObjectId>;
+  codeGrounds: Types.Array<Types.ObjectId>;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-export default User;
+export interface UserPopulatedFavourites extends Omit<User, 'favourites'> {
+  favourites: Types.Array<CodeGround>;
+}
+
+export interface UserPopulatedCodeGrounds extends Omit<User, 'codeGrounds'> {
+  codeGrounds: Types.Array<CodeGround>;
+}
+
+export default model('User', userSchema);
