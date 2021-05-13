@@ -13,8 +13,9 @@ export default (app: Application): void => {
       origin: process.env.ORIGIN || 'http://localhost:3000',
     }),
   );
-  app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+
+  app.use(logger('dev'));
   app.use(cookieParser());
 };

@@ -29,7 +29,7 @@ export default function NavLeft() {
   return (
     <NavList>
       <Logo
-        src="https://res.cloudinary.com/doh6rpdke/image/upload/v1620812620/Code-Grounds/assets/codeground-logo_lyteyj.png"
+        src="https://res.cloudinary.com/doh6rpdke/image/upload/v1620936255/code-ground/assets/Untitled_design_qhrefh.png"
         alt="logo"
       />
       <Link to="/">

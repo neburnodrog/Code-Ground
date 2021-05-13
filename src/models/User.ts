@@ -3,7 +3,6 @@ import { CodeGround } from './CodeGround';
 
 const userSchema = new Schema(
   {
-    _id: Types.ObjectId,
     username: {
       type: String,
       unique: true,
@@ -33,7 +32,7 @@ const userSchema = new Schema(
       path: {
         type: String,
         default:
-          'https://res.cloudinary.com/doh6rpdke/image/upload/w_200,h_200/v1620665635/Gouda-Chess/assets/avatar-1577909_960_720_r9xjzp_aobufm.webp',
+          'https://res.cloudinary.com/doh6rpdke/image/upload/w_200,h_200/v1620939020/code-ground/avatars/avatar-1577909_960_720_r9xjzp_g5kosd.webp',
       },
       cloudinaryId: { type: String },
     },

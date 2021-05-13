@@ -12,7 +12,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'iron-cream',
+    folder: 'code-ground',
     allowed_formats: 'jpg, jpeg, png, gif',
   },
 });
