@@ -33,18 +33,20 @@ export default function NavRight({ user }: { user: boolean }) {
     );
   };
   const anonynousNav = () => {
-    <>
-      <Link to="/signup">
-        <NavLink>Sign Up</NavLink>
-      </Link>
+    return (
+      <>
+        <Link to="/signup">
+          <NavLink>Sign Up</NavLink>
+        </Link>
 
-      <Link to="/login">
-        <NavLink>
-          Log In <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
-        </NavLink>
-      </Link>
-    </>;
+        <Link to="/login">
+          <NavLink>
+            Log In <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
+          </NavLink>
+        </Link>
+      </>
+    );
   };
 
-  return <NavList>{user ? signedInNav : anonynousNav}</NavList>;
+  return <NavList>{user ? signedInNav() : anonynousNav()}</NavList>;
 }
