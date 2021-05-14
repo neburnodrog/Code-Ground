@@ -4,13 +4,13 @@ import { UserDocument } from '../../src/models/User';
 
 // COMPONENTS
 import NavBar from './Components/NavBar/NavBar';
-import Home from './Routes/Home';
-import Profile from './Routes/Profile';
-import CodeGround from './Routes/CodeGround/CodeGround';
-import LoginForm from './Routes/LoginForm';
-import SignUpForm from './Routes/SignUpForm';
-import NotFound from './Routes/NotFound';
-import { ProtectedRoute } from './Routes/ProtectedRoute';
+import Home from './Pages/Home';
+import Profile from './Pages/Profile';
+import CodeGround from './Pages/CodeGround/CodeGround';
+import SignUp from './Pages/SignUp';
+import Login from './Pages/Login';
+import NotFound from './Pages/NotFound';
+import { ProtectedRoute } from './Pages/ProtectedRoute';
 
 // ICONS
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -39,14 +39,14 @@ function App(props: { user: UserDocument | null }) {
           path="/login"
           permission={user ? false : true}
           redirectPath="/profile"
-          component={LoginForm}
+          component={Login}
         />
         <ProtectedRoute
           exact={true}
           path="/signup"
           permission={user ? false : true}
           redirectPath="/profile"
-          component={SignUpForm}
+          component={SignUp}
         />
         <Route component={NotFound} />
       </Switch>
