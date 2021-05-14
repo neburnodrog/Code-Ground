@@ -18,12 +18,16 @@ const Title = styled.h2`
   color: #f4f6fc;
 `;
 
-export default function NavBar() {
+interface NavBarProps {
+  user: boolean;
+}
+
+export default function NavBar(props: NavBarProps) {
   return (
     <Navbar>
       <NavLeft />
       <Title>Code Ground</Title>
-      <NavRight />
+      <NavRight user={props.user} />
     </Navbar>
   );
 }

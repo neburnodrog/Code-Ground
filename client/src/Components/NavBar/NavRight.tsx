@@ -13,9 +13,27 @@ const NavList = styled.div`
   width: 40vw;
 `;
 
-export default function NavRight() {
-  return (
-    <NavList>
+export default function NavRight({ user }: { user: boolean }) {
+  const signedInNav = () => {
+    return (
+      <>
+        <Link to="/logout">
+          <NavLink>
+            Log Out <FontAwesomeIcon icon={['fas', 'sign-out-alt']} />
+          </NavLink>
+        </Link>
+
+        <Link to="/profile" style={{ marginLeft: '1em' }}>
+          <FontAwesomeIcon
+            className="profile-icon"
+            icon={['fas', 'user-circle']}
+          />
+        </Link>
+      </>
+    );
+  };
+  const anonynousNav = () => {
+    <>
       <Link to="/signup">
         <NavLink>Sign Up</NavLink>
       </Link>
@@ -25,19 +43,8 @@ export default function NavRight() {
           Log In <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
         </NavLink>
       </Link>
+    </>;
+  };
 
-      <Link to="/logout">
-        <NavLink>
-          Log Out <FontAwesomeIcon icon={['fas', 'sign-out-alt']} />
-        </NavLink>
-      </Link>
-
-      <Link to="/profile" style={{ marginLeft: '1em' }}>
-        <FontAwesomeIcon
-          className="profile-icon"
-          icon={['fas', 'user-circle']}
-        />
-      </Link>
-    </NavList>
-  );
+  return <NavList>{user ? signedInNav : anonynousNav}</NavList>;
 }

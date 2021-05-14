@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios';
 
-ReactDOM.render(
-  <Router>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Router>,
-  document.getElementById('root'),
-);
+import { UserDocument } from '../../src/models/User';
+
+axios
+  .get('/api/auth/logged-in')
+  .then((resp) => {
+    const user: UserDocument | null = resp.data;
+
+    ReactDOM.render(
+      <Router>
+        <React.StrictMode>
+          <App user={user} />
+        </React.StrictMode>
+      </Router>,
+      document.getElementById('root'),
+    );
+  })
+  .catch((err) => console.log(err));

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User';
 import bcrypt from 'bcrypt';
+import { UserDocument } from '../models/User';
 import passport from 'passport';
 
 const router = Router();
@@ -55,28 +56,29 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  passport.authenticate('local', (err, user) => {
-    if (err) {
-      return res
-        .status(400)
-        .json({ message: 'Error while logging the user in', err });
-    }
+  passport.authenticate('local', (err, user: UserDocument | undefined) => {
+    if (err) return res.status(400).json({ message: 'Error logging in' });
 
     if (!user) {
       return res.status(400).json({ message: 'Wrong credentials' });
     }
 
-    req.login((user, err) => {
+    req.login(user, (err) => {
+      console.log(user);
+
+      console.log(typeof user.favourites);
+
       if (err) {
         return res.status(500).json({ message: 'Error while logging in' });
+      } else {
+        return res.status(200).json(user);
       }
-
-      return res.status(200).json(user);
     });
   })(req, res);
 });
 
 router.get('/logged-in', (req, res) => {
+  console.log(req.user);
   res.json(req.user);
 });
 
