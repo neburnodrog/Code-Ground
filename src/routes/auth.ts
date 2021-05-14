@@ -14,42 +14,49 @@ router.post('/signup', async (req, res) => {
       res
         .status(400)
         .json({ message: 'you must provide all the required fields' });
-    } else if (password.length < 8) {
+      return;
+    }
+
+    if (password.length < 8) {
       res
         .status(400)
         .json({ message: 'your password has to be at least 8 chars long' });
-    } else if (username === '') {
+      return;
+    }
+
+    if (username === '') {
       res
         .status(400)
         .json({ message: 'The username field cannot remain be empty' });
-    } else {
-      const userFromDB = await User.findOne({ username: username });
-      if (userFromDB !== null) {
-        res.status(400).json({ message: 'This username is already taken' });
-        return;
-      } else {
-        const salt = bcrypt.genSaltSync();
-        const hash = bcrypt.hashSync(password, salt);
-
-        const newUser = await User.create({
-          username,
-          email,
-          password: hash,
-        });
-
-        res.status(200).json({ newUser });
-
-        // req.login(newUser, (err) => {
-        //   if (err) {
-        //     return res
-        //       .status(500)
-        //       .json({ message: 'Error while attempting to login' });
-        //   } else {
-        //     return res.status(200).json(newUser);
-        //   }
-        // });
-      }
+      return;
     }
+
+    const userDb = await User.findOne({ username: username });
+
+    if (userDb !== null) {
+      res.status(400).json({ message: 'This username is already taken' });
+      return;
+    }
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync(password, salt);
+
+    const newUser = await User.create({
+      username,
+      email,
+      password: hash,
+    });
+
+    res.status(200).json({ newUser });
+
+    // req.login(newUser, (err) => {
+    //   if (err) {
+    //     return res
+    //       .status(500)
+    //       .json({ message: 'Error while attempting to login' });
+    //   } else {
+    //     return res.status(200).json(newUser);
+    //   }
+    // });
   } catch (err) {
     res.json(err);
   }
@@ -78,7 +85,6 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logged-in', (req, res) => {
-  console.log(req.user);
   res.json(req.user);
 });
 
