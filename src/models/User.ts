@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Model, Types, Document } from 'mongoose';
 import { CodeGround } from './CodeGround';
 
 const userSchema = new Schema(
@@ -52,7 +52,7 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
-export interface User extends Document {
+export interface UserDocument extends Document {
   username: string;
   password: string;
   email: string;
@@ -68,12 +68,14 @@ export interface User extends Document {
   updatedAt: Date;
 }
 
-export interface UserPopulatedFavourites extends Omit<User, 'favourites'> {
+export interface UserPopulatedFavourites
+  extends Omit<UserDocument, 'favourites'> {
   favourites: Types.Array<CodeGround>;
 }
 
-export interface UserPopulatedCodeGrounds extends Omit<User, 'codeGrounds'> {
+export interface UserPopulatedCodeGrounds
+  extends Omit<UserDocument, 'codeGrounds'> {
   codeGrounds: Types.Array<CodeGround>;
 }
 
-export default model('User', userSchema);
+export default model<UserDocument, Model<UserDocument>>('User', userSchema);
