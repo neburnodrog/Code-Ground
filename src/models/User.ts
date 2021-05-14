@@ -1,5 +1,5 @@
 import { Schema, model, Model, Types, Document } from 'mongoose';
-import { CodeGround } from './CodeGround';
+import { CodeGroundDocument } from './CodeGround';
 
 const userSchema = new Schema(
   {
@@ -70,12 +70,12 @@ export interface UserDocument extends Document {
 
 export interface UserPopulatedFavourites
   extends Omit<UserDocument, 'favourites'> {
-  favourites: Types.Array<CodeGround>;
+  favourites: Types.Array<CodeGroundDocument>;
 }
 
 export interface UserPopulatedCodeGrounds
   extends Omit<UserDocument, 'codeGrounds'> {
-  codeGrounds: Types.Array<CodeGround>;
+  codeGrounds: Types.Array<CodeGroundDocument>;
 }
 
 export default model<UserDocument, Model<UserDocument>>('User', userSchema);

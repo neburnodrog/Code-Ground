@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { User } from './User';
+import { Schema, model, Model, Document } from 'mongoose';
+import { UserDocument } from './User';
 
 const codeGroundSchema = new Schema(
   {
@@ -33,22 +33,25 @@ const codeGroundSchema = new Schema(
   { timestamps: true },
 );
 
-export interface CodeGround {
+export interface CodeGroundDocument extends Document {
   title: string;
   user: Schema.Types.ObjectId;
   html: string;
   css: string;
   js: string;
   forked: boolean;
-  creator: Schema.Types.ObjectId | null;
+  creator: Schema.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface CodeGroundPopulated
-  extends Omit<CodeGround, 'creator' | 'user'> {
-  user: User;
-  creator: User;
+  extends Omit<CodeGroundDocument, 'creator' | 'user'> {
+  user: UserDocument;
+  creator: UserDocument;
 }
 
-export default model('CodeGround', codeGroundSchema);
+export default model<CodeGroundDocument, Model<CodeGroundDocument>>(
+  'CodeGround',
+  codeGroundSchema,
+);
