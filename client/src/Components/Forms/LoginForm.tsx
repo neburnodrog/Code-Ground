@@ -34,13 +34,34 @@ type InputProps = {
   touched: boolean;
 };
 
-const Input = styled.input<InputProps>`
-  padding: 5px 20px;
+const Label = styled.label`
+  margin-top: 1.5em;
+`;
 
+const Input = styled.input<InputProps>`
+  padding: 0.5em 2em;
+
+  margin-top: 0.4em;
+  border-radius: 0.3em;
   ${(props) =>
     props.touched
       ? 'border: 1px solid lightblue'
-      : 'border: 1px solid transparent'}
+      : 'border: 1px solid transparent'};
+`;
+
+const FormContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default function LoginForm() {
@@ -91,10 +112,14 @@ export default function LoginForm() {
     handleBlur,
   } = useForm({ initialValues, onSubmit, validate });
 
+  console.log({ values });
+  console.log({ touchedValues });
+  console.log({ errors });
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
+    <FormContainer>
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="username">Username</Label>
         <Input
           type="text"
           name="username"
@@ -104,9 +129,13 @@ export default function LoginForm() {
           value={values.username}
           touched={touchedValues.username}
         />
-        {errors.username && <small>{errors.username}</small>}
+        {errors.username !== '' ? (
+          <small>{errors.username}</small>
+        ) : (
+          <small></small>
+        )}
 
-        <label htmlFor="email">Email</label>
+        <Label htmlFor="email">Email</Label>
         <Input
           type="text"
           name="email"
@@ -116,9 +145,9 @@ export default function LoginForm() {
           value={values.email}
           touched={touchedValues.email}
         />
-        {errors.email && <small>{errors.email}</small>}
+        {errors.email !== '' ? <small>{errors.email}</small> : <small></small>}
 
-        <label htmlFor="password">Password</label>
+        <Label htmlFor="password">Password</Label>
         <Input
           type="password"
           name="password"
@@ -128,9 +157,13 @@ export default function LoginForm() {
           value={values.password}
           touched={touchedValues.password}
         />
-        {errors.password && <small>{errors.password}</small>}
+        {errors.password !== '' ? (
+          <small>{errors.password}</small>
+        ) : (
+          <small></small>
+        )}
 
-        <label htmlFor="password2">Password</label>
+        <Label htmlFor="password2">Password</Label>
         <Input
           type="password"
           name="password2"
@@ -140,10 +173,14 @@ export default function LoginForm() {
           value={values.password2}
           touched={touchedValues.password2}
         />
-        {errors.password2 && <small>{errors.password2}</small>}
+        {errors.password2 !== '' ? (
+          <small>{errors.password2}</small>
+        ) : (
+          <small></small>
+        )}
 
         <button type="submit">Log In</button>
-      </form>
-    </div>
+      </Form>
+    </FormContainer>
   );
 }
