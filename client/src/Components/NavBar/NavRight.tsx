@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavLink from './NavLink';
+import { Button } from '../StyledComponents/FormComponents';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -18,9 +18,9 @@ export default function NavRight({ user }: { user: boolean }) {
     return (
       <>
         <Link to="/logout">
-          <NavLink>
+          <Button border={false}>
             Log Out <FontAwesomeIcon icon={['fas', 'sign-out-alt']} />
-          </NavLink>
+          </Button>
         </Link>
 
         <Link to="/profile" style={{ marginLeft: '1em' }}>
@@ -36,13 +36,13 @@ export default function NavRight({ user }: { user: boolean }) {
     return (
       <>
         <Link to="/signup">
-          <NavLink>Sign Up</NavLink>
+          <Button border={false}>Sign Up</Button>
         </Link>
 
         <Link to="/login">
-          <NavLink>
+          <Button border={false}>
             Log In <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
-          </NavLink>
+          </Button>
         </Link>
       </>
     );

@@ -1,23 +1,24 @@
 import { useState, FormEvent, FocusEvent, ChangeEvent } from 'react';
-import { UseFormProps } from './LoginForm';
+import { Errors, Values } from './LoginForm';
+
+export interface UseFormProps {
+  initialValues: Values;
+  onSubmit: (values: Values, errors: Errors<boolean>) => void;
+  validate: (values: Values) => Errors<boolean>;
+}
 
 export const useForm = ({
   initialValues,
-  onSubmit,
   validate,
+  onSubmit,
 }: UseFormProps) => {
-  const [values, setValues] = useState(initialValues || {});
+  const [values, setValues] = useState(initialValues);
+  const [errors, setErrors] = useState<Errors<boolean>>({});
   const [touchedValues, setTouchedValues] = useState({
     username: false,
     password: false,
     password2: false,
     email: false,
-  });
-  const [errors, setErrors] = useState({
-    username: '',
-    password: '',
-    password2: '',
-    email: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,31 +29,43 @@ export const useForm = ({
     setValues({ ...values, [name]: value });
   };
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    console.log('handleFocus function');
+
     const target = e.currentTarget;
     const name = target.name;
 
     setTouchedValues({ ...touchedValues, [name]: true });
+  };
 
-    const errors = validate(values);
-    setErrors(errors);
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    console.log('handleBlur function');
+
+    const target = e.currentTarget;
+    const name: keyof Errors<boolean> = target.name;
+
+    let isValid = validate(values)[name];
+
+    setErrors({ ...errors, [name]: isValid });
+    setTouchedValues({ ...touchedValues, [name]: false });
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const error = validate(values);
-    setErrors({ ...errors, ...error });
+    const currentErrors = validate(values);
+    setErrors(currentErrors);
 
     onSubmit(values, errors);
   };
 
   return {
     values,
-    touchedValues,
     errors,
+    touchedValues,
     handleChange,
     handleSubmit,
+    handleFocus,
     handleBlur,
   };
 };

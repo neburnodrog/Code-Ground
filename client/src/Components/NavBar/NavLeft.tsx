@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import NavLink from './NavLink';
+import { Button } from '../StyledComponents/FormComponents';
 
 const Logo = styled.img`
   width: 3em;
@@ -33,12 +33,12 @@ export default function NavLeft() {
         alt="logo"
       />
       <Link to="/">
-        <NavLink>Dashboard</NavLink>
+        <Button border={false}>Dashboard</Button>
       </Link>
       <Link to="/code-ground">
-        <NavLink>
+        <Button border={false}>
           New <FontAwesomeIcon icon={['fas', 'plus']} />
-        </NavLink>
+        </Button>
       </Link>
     </NavList>
   );
