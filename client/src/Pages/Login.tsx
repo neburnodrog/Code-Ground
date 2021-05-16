@@ -1,6 +1,11 @@
-import React, { FormEvent, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import LoginForm from '../Components/Forms/LoginForm';
+import { UserDocument } from '../../../src/models/User';
 
-export default function Login() {
-  return <LoginForm />;
+interface LoginProps {
+  setUser: Dispatch<SetStateAction<UserDocument | null>>;
+}
+
+export default function Login(props: LoginProps) {
+  return <LoginForm {...props} />;
 }

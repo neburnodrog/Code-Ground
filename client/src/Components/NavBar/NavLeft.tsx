@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Button } from '../StyledComponents/FormComponents';
+import { NavLink } from './NavBar';
 
 const Logo = styled.img`
   width: 3em;
@@ -17,12 +17,11 @@ const Logo = styled.img`
 `;
 
 const NavList = styled.div`
-  margin-right: 2em;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
-  width: 40vw;
+  width: 33vw;
 `;
 
 export default function NavLeft() {
@@ -33,12 +32,12 @@ export default function NavLeft() {
         alt="logo"
       />
       <Link to="/">
-        <Button border={false}>Dashboard</Button>
+        <NavLink>Dashboard</NavLink>
       </Link>
       <Link to="/code-ground">
-        <Button border={false}>
+        <NavLink>
           New <FontAwesomeIcon icon={['fas', 'plus']} />
-        </Button>
+        </NavLink>
       </Link>
     </NavList>
   );

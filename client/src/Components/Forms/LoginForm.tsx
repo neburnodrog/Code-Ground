@@ -1,144 +1,88 @@
-import React, { useEffect } from 'react';
+import React, {
+  useState,
+  FormEvent,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+} from 'react';
+import { Redirect } from 'react-router-dom';
+import { UserDocument } from '../../../../src/models/User';
 import './forms.css';
-import { useForm } from './CustomFormHook';
+import { login } from '../../services/auth';
 import {
   Label,
   Input,
   Form,
   FormContainer,
   Button,
+  InputGroup,
   Small,
 } from '../StyledComponents/FormComponents';
 
-const emailRegexp = new RegExp(
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-);
-const passwordRegexp = new RegExp(
-  /^(?=.*[0-9])(?=.*[|<>!@%+'!#$^?:.(){}[\]+~\-_.])[a-zA-Z0-9|<>!@%+'!#$^?:.(){}[\]+~\-_.]{8,30}$/,
-);
-
-export interface Values {
-  username: string;
-  password: string;
-  password2: string;
-  email: string;
+interface LoginFormProps {
+  setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
-export interface Errors<T> {
-  [key: string]: T;
-}
+export default function LoginForm(props: LoginFormProps) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-export default function LoginForm() {
-  const initialValues = {
-    username: '',
-    password: '',
-    password2: '',
-    email: '',
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    login(username, password)
+      .then((resp) => {
+        if (resp.hasOwnProperty('message')) {
+          setErrorMessage(resp.message);
+        } else {
+          props.setUser(resp);
+          <Redirect to="/profile" />;
+        }
+      })
+      .catch((err) => {
+        console.log('Error logged in in LoginForm.tsx line 29', err);
+      });
   };
 
-  const validate = (values: Values) => {
-    const { username, password, password2, email } = values;
-    const errors: Errors<boolean> = {};
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    const name = e.currentTarget.name;
 
-    if (username.length === 0) {
-      errors.username = true;
-    } else errors.username = false;
-
-    if (password.length < 8 || password || !passwordRegexp.test(password)) {
-      errors.password = true;
-    } else errors.password = false;
-
-    if (password2 !== password) {
-      errors.password2 = true;
-    } else errors.password2 = false;
-
-    if (!emailRegexp.test(email)) {
-      errors.email = true;
-    } else errors.email = false;
-
-    return errors;
+    if (name === 'username') setUsername(value);
+    if (name === 'password') setPassword(value);
   };
-
-  const onSubmit = (values: Values, errors: Errors<boolean>) => {
-    alert(JSON.stringify({ values }));
-  };
-
-  const {
-    values,
-    errors,
-    touchedValues,
-    handleChange,
-    handleSubmit,
-    handleFocus,
-    handleBlur,
-  } = useForm({ initialValues, validate, onSubmit });
-
-  useEffect(() => {
-    console.log('useEffect hook callback');
-
-    console.log('current State: ', values);
-    console.log('currently touched values: ', touchedValues);
-    console.log('current errors: ', errors);
-  }, [touchedValues, values, errors]);
 
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
-        <Label htmlFor="username">Username</Label>
-        <Input
-          type="text"
-          name="username"
-          id="username"
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          onChange={handleChange}
-          value={values.username}
-          error={errors.username}
-          required
-        />
+        <InputGroup>
+          <Label htmlFor="username">Username</Label>
+          <Input
+            type="text"
+            name="username"
+            id="username"
+            onChange={handleChange}
+            value={username}
+            required
+          />
+        </InputGroup>
 
-        <Label htmlFor="email">Email</Label>
-        <Input
-          type="email"
-          name="email"
-          id="email"
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          onChange={handleChange}
-          value={values.email}
-          error={errors.email}
-          required
-        />
+        <InputGroup>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            type="password"
+            name="password"
+            id="password"
+            onChange={handleChange}
+            value={password}
+            required
+          />
+        </InputGroup>
 
-        <Label htmlFor="password">Password</Label>
-        <Input
-          type="password"
-          name="password"
-          id="password"
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          onChange={handleChange}
-          value={values.password}
-          pattern="/^(?=.*[0-9])(?=.*[|<>!@%+'!#$^?:.(){}[\]+~\-_.])[a-zA-Z0-9|<>!@%+'!#$^?:.(){}[\]+~\-_.]{8,30}$/"
-          error={errors.password}
-        />
-        <Small>Must have min 8 chars 1 number & 1 special char</Small>
+        {errorMessage ? <Small>{errorMessage}</Small> : <Small></Small>}
 
-        <Label htmlFor="password2">Enter Password again:</Label>
-        <Input
-          type="password"
-          name="password2"
-          id="password2"
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          onChange={handleChange}
-          value={values.password2}
-          error={errors.password2}
-        />
-
-        <Button type="submit" border={true} id="submit">
-          Log In
-        </Button>
+        <Button type="submit">Login</Button>
       </Form>
     </FormContainer>
   );

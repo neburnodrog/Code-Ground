@@ -22,7 +22,7 @@ function App(props: { user: UserDocument | null }) {
 
   return (
     <div>
-      <NavBar user={user ? true : false} />
+      <NavBar user={user ? true : false} setUser={setUser} />
 
       <Switch>
         <Route exact path="/" component={Home} />
@@ -39,7 +39,7 @@ function App(props: { user: UserDocument | null }) {
           path="/login"
           permission={user ? false : true}
           redirectPath="/profile"
-          component={Login}
+          render={(props) => <Login setUser={setUser} />}
         />
         <ProtectedRoute
           exact={true}

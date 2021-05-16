@@ -1,9 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { UserDocument } from '../../../src/models/User';
 
-export const signup = async (username: string, password: string) => {
+interface Message {
+  message: string;
+}
+
+interface LoginResponse extends AxiosResponse<UserDocument | Message> {}
+
+export const signup = (username: string, email: string, password: string) => {
   return axios
-    .post('/api/auth/signup', { username, password })
-    .then((response) => {
+    .post('/api/auth/signup', { username, email, password })
+    .then((response: LoginResponse) => {
       return response.data;
     })
     .catch((err) => {
@@ -14,7 +21,7 @@ export const signup = async (username: string, password: string) => {
 export const login = (username: string, password: string) => {
   return axios
     .post('/api/auth/login', { username, password })
-    .then((response) => {
+    .then((response: LoginResponse) => {
       return response.data;
     })
     .catch((err) => {

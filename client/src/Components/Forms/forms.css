@@ -1,3 +1,5 @@
-#submit {
-  margin-top: 2em;
+.form-info {
+  position: absolute;
+  right: -1.5em;
+  bottom: 0.7em;
 }

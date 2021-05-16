@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { UserDocument } from '../../../../src/models/User';
 import styled from 'styled-components';
 import './NavBar.css';
 import NavRight from './NavRight';
 import NavLeft from './NavLeft';
+
+export const NavLink = styled.button`
+  font-size: inherit;
+  border: 0px;
+  background: transparent;
+  color: inherit;
+  padding: 0.3em 2.5em;
+  border-radius: 0.2em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  &:hover {
+    background-color: #233dff;
+  }
+  transition: background-color 1s;
+`;
 
 const Navbar = styled.nav`
   /* background: #000211; */
@@ -18,8 +34,9 @@ const Title = styled.h2`
   color: #f4f6fc;
 `;
 
-interface NavBarProps {
+export interface NavBarProps {
   user: boolean;
+  setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
 export default function NavBar(props: NavBarProps) {
@@ -27,7 +44,7 @@ export default function NavBar(props: NavBarProps) {
     <Navbar>
       <NavLeft />
       <Title>Code Ground</Title>
-      <NavRight user={props.user} />
+      <NavRight {...props} />
     </Navbar>
   );
 }

@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../StyledComponents/FormComponents';
-import { Link } from 'react-router-dom';
+import { NavLink } from './NavBar';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavBarProps } from './NavBar';
+import { logout } from '../../services/auth';
 
 const NavList = styled.div`
   margin-right: 2em;
@@ -10,17 +12,27 @@ const NavList = styled.div`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  width: 40vw;
+  width: 30vw;
 `;
 
-export default function NavRight({ user }: { user: boolean }) {
+export default function NavRight(props: NavBarProps) {
+  const handleLogout = () => {
+    logout()
+      .then((resp) => {
+        console.log(resp);
+        props.setUser(null);
+        <Redirect to="/" />;
+      })
+      .catch((err) => console.log(err));
+  };
+
   const signedInNav = () => {
     return (
       <>
         <Link to="/logout">
-          <Button border={false}>
+          <NavLink onClick={handleLogout}>
             Log Out <FontAwesomeIcon icon={['fas', 'sign-out-alt']} />
-          </Button>
+          </NavLink>
         </Link>
 
         <Link to="/profile" style={{ marginLeft: '1em' }}>
@@ -36,17 +48,17 @@ export default function NavRight({ user }: { user: boolean }) {
     return (
       <>
         <Link to="/signup">
-          <Button border={false}>Sign Up</Button>
+          <NavLink>Join</NavLink>
         </Link>
 
         <Link to="/login">
-          <Button border={false}>
-            Log In <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
-          </Button>
+          <NavLink>
+            Login <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
+          </NavLink>
         </Link>
       </>
     );
   };
 
-  return <NavList>{user ? signedInNav() : anonynousNav()}</NavList>;
+  return <NavList>{props.user ? signedInNav() : anonynousNav()}</NavList>;
 }

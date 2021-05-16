@@ -10,7 +10,7 @@ import { UserDocument } from '../../src/models/User';
 axios
   .get('/api/auth/logged-in')
   .then((resp) => {
-    const user: UserDocument | null = resp.data;
+    const user: UserDocument = resp.data;
 
     ReactDOM.render(
       <Router>
