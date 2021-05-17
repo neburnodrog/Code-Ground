@@ -36,9 +36,11 @@ const StyledSave = styled(Save)`
   transition: background 1s;
 `;
 
-export default function CodeGroundBar() {
-  const handleSave = () => {};
+interface CodeGroundBarProps {
+  handleSave: () => void;
+}
 
+export default function CodeGroundBar(props: CodeGroundBarProps) {
   return (
     <StyledCodeBar>
       <Link to="/code-ground">
@@ -46,7 +48,7 @@ export default function CodeGroundBar() {
           <StyledNew size={'1em'} />
         </WrapperButton>
       </Link>
-      <WrapperButton onClick={handleSave}>
+      <WrapperButton onClick={props.handleSave}>
         <StyledSave size={'1em'} />
       </WrapperButton>
     </StyledCodeBar>

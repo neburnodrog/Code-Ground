@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import { saveCodeGround } from '../services/codeground';
 import { CodeGroundDocument } from '../../../src/models/CodeGround';
+import { UserDocument } from '../../../src/models/User';
 import { CodeEditor } from '../Components/CodeGround/CodeEditor';
 import CodeGroundTitle from '../Components/CodeGround/CodeGroundTitle';
+import CodeGroundBar from '../Components/CodeGround/CodeGroundBar';
 const CodeGroundWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,8 +32,14 @@ const IframeWrapper = styled.div`
 `;
 
 export interface CodeGroundProps {
+  user: UserDocument | null;
   codeGround?: CodeGroundDocument;
 }
+
+const OuterWrapper = styled.div`
+  display: flex;
+  height: 94.5vh;
+`;
 
 export default function CodeGround(props: CodeGroundProps) {
   const codeGround = props.codeGround;
@@ -60,8 +70,19 @@ export default function CodeGround(props: CodeGroundProps) {
     return () => clearTimeout(timeout);
   }, [html, css, js]);
 
+  const handleSave = () => {
+    const { user } = props;
+
+    if (!user) {
+      <Redirect to="login" />;
+    } else {
+      saveCodeGround(title, html, css, js, user._id);
+    }
+  };
+
   return (
-    <>
+    <OuterWrapper>
+      <CodeGroundBar handleSave={handleSave} />
       <CodeGroundWrapper>
         <CodeGroundTitle title={title} setTitle={setTitle} />
         <EditorsWrapper>
@@ -96,6 +117,6 @@ export default function CodeGround(props: CodeGroundProps) {
           ></iframe>
         </IframeWrapper>
       </CodeGroundWrapper>
-    </>
+    </OuterWrapper>
   );
 }

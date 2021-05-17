@@ -10,32 +10,20 @@ interface LoginResponse extends AxiosResponse<UserDocument | Message> {}
 export const signup = (username: string, email: string, password: string) => {
   return axios
     .post('/api/auth/signup', { username, email, password })
-    .then((response: LoginResponse) => {
-      return response.data;
-    })
-    .catch((err) => {
-      return err;
-    });
+    .then((resp: LoginResponse) => resp.data)
+    .catch((err) => err);
 };
 
 export const login = (username: string, password: string) => {
   return axios
     .post('/api/auth/login', { username, password })
-    .then((response: LoginResponse) => {
-      return response.data;
-    })
-    .catch((err) => {
-      return err;
-    });
+    .then((resp: LoginResponse) => resp.data)
+    .catch((err) => err);
 };
 
 export const logout = () => {
   return axios
     .delete('/api/auth/logout')
-    .then((response) => {
-      return response.data;
-    })
-    .catch((err) => {
-      return err;
-    });
+    .then((resp) => resp.data)
+    .catch((err) => err);
 };

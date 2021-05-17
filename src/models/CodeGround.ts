@@ -27,7 +27,6 @@ const codeGroundSchema = new Schema(
     creator: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      default: null,
     },
   },
   { timestamps: true },

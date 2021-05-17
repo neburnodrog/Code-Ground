@@ -1,2 +1,29 @@
-const a = 2;
-export default a;
+import axios, { AxiosResponse } from 'axios';
+import {
+  CodeGroundPopulated,
+  CodeGroundDocument,
+} from '../../../src/models/CodeGround';
+import { UserDocument } from '../../../src/models/User';
+
+interface fetchAllResponse extends AxiosResponse<CodeGroundPopulated[]> {}
+interface SaveResponse extends AxiosResponse<CodeGroundDocument | Error> {}
+
+export const fetchAll = (): Promise<CodeGroundPopulated[]> => {
+  return axios
+    .get('/api/code-ground/')
+    .then((resp: fetchAllResponse) => resp.data)
+    .catch((err) => err);
+};
+
+export const saveCodeGround = (
+  title: string,
+  html: string,
+  css: string,
+  js: string,
+  _id: string,
+): Promise<CodeGroundDocument> => {
+  return axios
+    .post('/api/code-ground/', { title, html, css, js, _id })
+    .then((resp: SaveResponse) => resp.data)
+    .catch((err) => err);
+};
