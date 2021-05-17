@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { UserDocument } from '../../../../src/models/User';
 import styled from 'styled-components';
-import './NavBar.css';
 import NavRight from './NavRight';
 import NavLeft from './NavLeft';
 
@@ -20,7 +19,7 @@ export const NavLink = styled.button`
   transition: background-color 1s;
 `;
 
-const Navbar = styled.nav`
+export const Navbar = styled.nav`
   /* background: #000211; */
   background: #050a30;
   max-height: 5%;

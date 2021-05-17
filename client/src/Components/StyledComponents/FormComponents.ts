@@ -92,4 +92,8 @@ export const Button = styled.button`
     background-color: #233dff;
     transition: background-color 1s;
   }
+  &:focus {
+    background-color: #233dff;
+    transition: background-color 1s;
+  }
 `;

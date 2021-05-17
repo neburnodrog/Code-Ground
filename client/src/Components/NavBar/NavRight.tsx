@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from './NavBar';
 import { Link, Redirect } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UserCircle, SignOutAlt, SignInAlt } from '@styled-icons/fa-solid';
 import { NavBarProps } from './NavBar';
 import { logout } from '../../services/auth';
 
@@ -13,6 +13,15 @@ const NavList = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 30vw;
+`;
+
+const ProfileIcon = styled(UserCircle)`
+  &:hover {
+    border-radius: 50%;
+    box-shadow: 0px 0px 3px 3px #233dff;
+    transition: 1s;
+    color: #f4f6fc;
+  }
 `;
 
 export default function NavRight(props: NavBarProps) {
@@ -29,17 +38,12 @@ export default function NavRight(props: NavBarProps) {
   const signedInNav = () => {
     return (
       <>
-        <Link to="/logout">
-          <NavLink onClick={handleLogout}>
-            Log Out <FontAwesomeIcon icon={['fas', 'sign-out-alt']} />
-          </NavLink>
-        </Link>
+        <NavLink onClick={handleLogout}>
+          Log Out <SignOutAlt size={'1em'} />
+        </NavLink>
 
         <Link to="/profile" style={{ marginLeft: '1em' }}>
-          <FontAwesomeIcon
-            className="profile-icon"
-            icon={['fas', 'user-circle']}
-          />
+          <ProfileIcon size={'1.3em'} />
         </Link>
       </>
     );
@@ -53,7 +57,7 @@ export default function NavRight(props: NavBarProps) {
 
         <Link to="/login">
           <NavLink>
-            Login <FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
+            Login <SignInAlt size={'1em'} />
           </NavLink>
         </Link>
       </>

@@ -1,19 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { NavLink } from './NavBar';
+import { Plus, Home } from '@styled-icons/fa-solid';
+import { WrapperButton } from '../StyledComponents/IconsButtons';
 
 const Logo = styled.img`
-  width: 3em;
+  height: 2em;
   margin-left: 2em;
+  margin-right: 1.5em;
   border-radius: 50%;
   border: 2px solid transparent;
-  &:hover {
-    border: 2px solid #f4f6fc;
-    transition: 1s;
-  }
 `;
 
 const NavList = styled.div`
@@ -24,6 +20,10 @@ const NavList = styled.div`
   width: 33vw;
 `;
 
+const IconWrapper = styled(WrapperButton)`
+  margin: 0em 1.5em;
+`;
+
 export default function NavLeft() {
   return (
     <NavList>
@@ -32,12 +32,9 @@ export default function NavLeft() {
         alt="logo"
       />
       <Link to="/">
-        <NavLink>Dashboard</NavLink>
-      </Link>
-      <Link to="/code-ground">
-        <NavLink>
-          New <FontAwesomeIcon icon={['fas', 'plus']} />
-        </NavLink>
+        <IconWrapper>
+          <Home size={'1.3em'} />
+        </IconWrapper>
       </Link>
     </NavList>
   );
