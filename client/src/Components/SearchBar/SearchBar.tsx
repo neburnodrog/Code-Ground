@@ -23,6 +23,7 @@ const Input = styled.input`
   flex-grow: 5;
   border-radius: 0.2em;
   margin-right: 1em;
+  font-size: 1rem;
   &:focus {
     border: 0px !important;
     box-shadow: 0px 0px 0px 0px !important;

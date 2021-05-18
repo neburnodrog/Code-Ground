@@ -18,20 +18,25 @@ const TitleContainer = styled.nav`
 `;
 
 const Title = styled.input`
-  ${({ readOnly }) =>
-    readOnly
-      ? 'border: 1px solid rgba(255, 255, 255, 0.4)'
-      : 'border: 1px solid green'}
   font-size: inherit;
   color: inherit;
   background: transparent;
   text-align: center;
   outline: none;
+  ${(props) =>
+    props.readOnly
+      ? 'border: 1px solid rgba(255, 255, 255, 0.4);'
+      : 'border: 1px solid lime; box-shadow: 0px 0px 1px 1px lime'}
 `;
 
 const EditButton = styled(WrapperButton)`
   margin-top: 0px;
   margin-left: 0.3em;
+  padding: 0.4em;
+  &:hover {
+    background: #233dff;
+    transition: 0.5s;
+  }
 `;
 
 interface CodeGroundTitleProps {
@@ -47,13 +52,13 @@ export default function CodeGroundTitle(props: CodeGroundTitleProps) {
     setTitle(e.currentTarget.value);
   };
 
-  const handleEdit = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleEdit = () => {
     setEditable((Prev) => !Prev);
   };
 
-  useEffect(() => {
-    console.log(editable);
-  }, [editable]);
+  const handleBlur = () => {
+    setEditable(false);
+  };
 
   return (
     <TitleContainer>
@@ -61,10 +66,12 @@ export default function CodeGroundTitle(props: CodeGroundTitleProps) {
         type="text"
         value={title}
         onChange={handleChange}
+        onClick={handleEdit}
+        onBlur={handleBlur}
         readOnly={!editable}
       />
       <EditButton onClick={handleEdit}>
-        <Edit size={'1em'} />
+        <Edit size={'1.2em'} />
       </EditButton>
     </TitleContainer>
   );

@@ -33,7 +33,7 @@ const Title = styled.h2`
 `;
 
 export interface NavBarProps {
-  user: boolean;
+  user: UserDocument | null;
   setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 

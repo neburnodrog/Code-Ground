@@ -87,7 +87,11 @@ export default class Home extends React.Component<HomeProps, HomeState> {
       );
 
     return filtered
-      ? filtered.map((each) => <ResultField>{each}</ResultField>)
+      ? filtered
+          .map((each) => (
+            <ResultField user={this.props.user} codeGround={each} />
+          ))
+          .slice(0, 6)
       : null;
   };
 

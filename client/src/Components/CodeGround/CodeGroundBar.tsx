@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Save, Plus } from '@styled-icons/fa-solid';
+import { Save, Plus, PlaceOfWorship } from '@styled-icons/fa-solid';
 import { WrapperButton } from '../../Components/StyledComponents/IconsButtons';
+import { UserDocument } from '../../../../src/models/User';
 
 const StyledCodeBar = styled.nav`
-  /* background: #000211; */
-  background: #050a30;
+  background: #2b2d3b;
+  padding: 0.2em;
   height: 100%;
   max-height: 100%;
   color: #f4f6fc;
@@ -38,19 +39,26 @@ const StyledSave = styled(Save)`
 
 interface CodeGroundBarProps {
   handleSave: () => void;
+  user: UserDocument | null;
 }
 
 export default function CodeGroundBar(props: CodeGroundBarProps) {
+  const renderSaveButton = () => {
+    return (
+      <WrapperButton onClick={props.handleSave}>
+        <StyledSave size={'1.2em'} />
+      </WrapperButton>
+    );
+  };
+
   return (
     <StyledCodeBar>
       <Link to="/code-ground">
         <WrapperButton>
-          <StyledNew size={'1em'} />
+          <StyledNew size={'1.2em'} />
         </WrapperButton>
       </Link>
-      <WrapperButton onClick={props.handleSave}>
-        <StyledSave size={'1em'} />
-      </WrapperButton>
+      {props.user && renderSaveButton()}
     </StyledCodeBar>
   );
 }

@@ -20,20 +20,22 @@ const AppContainer = styled.main`
   padding: 0;
 `;
 
-interface Path {
-  path: string;
-}
-
 function App(props: { user: UserDocument | null }) {
   const [user, setUser] = useState(props.user);
   const [notSavedCodeGround, setNotSavedCodeGround] = useState(false);
 
+  console.log(user);
+
   return (
     <AppContainer>
-      <NavBar user={user ? true : false} setUser={setUser} />
+      <NavBar user={user} setUser={setUser} />
 
       <Switch>
-        <Route exact path="/" render={(props) => <Home user={user} />} />
+        <Route
+          exact
+          path="/"
+          render={(props) => <Home {...props} user={user} />}
+        />
         <ProtectedRoute
           exact={true}
           path="/profile"
@@ -44,8 +46,9 @@ function App(props: { user: UserDocument | null }) {
         <Route
           exact
           path="/code-ground"
-          render={() => (
+          render={(props) => (
             <CodeGround
+              {...props}
               user={user}
               setNotSavedCodeGround={setNotSavedCodeGround}
               notSavedCodeGround={notSavedCodeGround}
@@ -57,6 +60,7 @@ function App(props: { user: UserDocument | null }) {
           path="/code-ground/:id"
           render={(props) => (
             <CodeGround
+              {...props}
               id={props.match.params.id}
               user={user}
               setNotSavedCodeGround={setNotSavedCodeGround}
@@ -70,7 +74,11 @@ function App(props: { user: UserDocument | null }) {
           permission={user ? false : true}
           redirectPath="/profile"
           render={(props) => (
-            <Login setUser={setUser} notSavedCodeGround={notSavedCodeGround} />
+            <Login
+              {...props}
+              setUser={setUser}
+              notSavedCodeGround={notSavedCodeGround}
+            />
           )}
         />
         <ProtectedRoute

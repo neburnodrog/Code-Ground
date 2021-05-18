@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
+import { UserDocument } from '../../../../src/models/User';
 import {
   CodeBranch,
   Bookmark,
@@ -14,7 +15,6 @@ const ResultFieldContainer = styled.article`
   display: flex;
   flex-direction: column;
   width: 25vw;
-  height: 35vh;
   background: #2b2d3b;
   margin: 1em;
   padding: 0.3em;
@@ -61,16 +61,17 @@ const IconWrapper = styled(WrapperButton)`
   margin-top: 0em;
   background: #000211;
   border-radius: 0.1em;
-  padding: 0.1em;
+  padding: 0.4em;
   margin: 0em 0.2em;
 `;
 
 interface ResultFieldProps {
-  children: CodeGroundPopulated;
+  codeGround: CodeGroundPopulated;
+  user: UserDocument | null;
 }
 
 export default function ResultField(props: ResultFieldProps) {
-  const codeGround = props.children;
+  const { codeGround, user } = props;
 
   const srcDoc = `
   <html>
@@ -81,6 +82,24 @@ export default function ResultField(props: ResultFieldProps) {
     <script>${codeGround.js}</script>
   </html>
   `;
+
+  const renderLoggedInButtons = () => {
+    if (user && codeGround.user.username !== user.username) {
+      return (
+        <>
+          <IconWrapper>
+            <ThumbsUp size={'1.2em'} />
+          </IconWrapper>
+          <IconWrapper>
+            <Bookmark size={'1.2em'} />
+          </IconWrapper>
+          <IconWrapper>
+            <CodeBranch size={'1.2em'} />
+          </IconWrapper>
+        </>
+      );
+    } else return null;
+  };
 
   return (
     <ResultFieldContainer>
@@ -104,20 +123,10 @@ export default function ResultField(props: ResultFieldProps) {
       </ThumbnailWrapper>
 
       <OptionsWrapper>
-        <IconWrapper>
-          <ThumbsUp size={'1em'} />
-        </IconWrapper>
+        {renderLoggedInButtons()}
 
         <IconWrapper>
           <Comments size={'1em'} />
-        </IconWrapper>
-
-        <IconWrapper>
-          <Bookmark size={'1em'} />
-        </IconWrapper>
-
-        <IconWrapper>
-          <CodeBranch size={'1em'} />
         </IconWrapper>
       </OptionsWrapper>
     </ResultFieldContainer>

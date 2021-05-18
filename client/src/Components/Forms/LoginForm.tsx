@@ -39,7 +39,7 @@ export default function LoginForm(props: LoginFormProps) {
         } else {
           props.setUser(resp);
           props.notSavedCodeGround ? (
-            <Redirect to="code-grounds" />
+            <Redirect to="/code-grounds" />
           ) : (
             <Redirect to="/profile" />
           );

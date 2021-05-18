@@ -1,7 +1,11 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import { fetchOne, saveCodeGround } from '../services/codeground';
+import {
+  fetchOne,
+  createCodeGround,
+  updateCodeGround,
+} from '../services/codeground';
 import { CodeGroundDocument } from '../../../src/models/CodeGround';
 import { UserDocument } from '../../../src/models/User';
 import { CodeEditor } from '../Components/CodeGround/CodeEditor';
@@ -53,6 +57,8 @@ export default function CodeGround(props: CodeGroundProps) {
   const [srcDoc, setSrcDoc] = useState('');
   const [creator, setCreator] = useState('');
 
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+
   const defaultCss = '<style>body{margin:0}</style>';
 
   useEffect(() => {
@@ -95,24 +101,42 @@ export default function CodeGround(props: CodeGroundProps) {
   }, [html, css, js]);
 
   const handleSave = () => {
-    const { user } = props;
-
     if (!user) {
+      console.log('no user found');
       window.localStorage.setItem('title', title);
       window.localStorage.setItem('html', html);
       window.localStorage.setItem('css', css);
       window.localStorage.setItem('js', js);
-
-      props.setNotSavedCodeGround(true);
-      (() => <Redirect to="login" />)();
+      setNotSavedCodeGround(true);
+      setRedirectToLogin((prevRedirect) => !prevRedirect);
+    } else if (!id || user._id !== creator) {
+      console.log('else if in handleSave');
+      createCodeGround(title, html, css, js, user._id, creator).then(
+        (codeGround) => {
+          setTitle(codeGround.title);
+          setHtml(codeGround.html);
+          setCss(codeGround.css);
+          setJs(codeGround.js);
+          setCreator(codeGround.creator);
+        },
+      );
     } else {
-      saveCodeGround(title, html, css, js, user._id);
+      updateCodeGround(title, html, css, js, id).then((codeGround) => {
+        console.log(codeGround);
+        setTitle(codeGround.title);
+        setHtml(codeGround.html);
+        setCss(codeGround.css);
+        setJs(codeGround.js);
+        setCreator(codeGround.creator);
+      });
     }
   };
 
-  return (
+  return redirectToLogin ? (
+    <Redirect to="/login" />
+  ) : (
     <OuterWrapper>
-      <CodeGroundBar handleSave={handleSave} />
+      <CodeGroundBar handleSave={handleSave} user={user} />
       <CodeGroundWrapper>
         <CodeGroundTitle title={title} setTitle={setTitle} />
         <EditorsWrapper>
