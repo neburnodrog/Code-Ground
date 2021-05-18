@@ -7,7 +7,7 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      maxLength: 50,
+      maxLength: 20,
       trim: true,
     },
     password: {
@@ -36,7 +36,7 @@ const userSchema = new Schema(
       },
       cloudinaryId: { type: String },
     },
-    favourites: [
+    bookmarked: [
       {
         type: Types.ObjectId,
         ref: 'CodeGround',

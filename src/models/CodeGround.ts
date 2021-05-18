@@ -1,4 +1,4 @@
-import { Schema, model, Model, Document } from 'mongoose';
+import { Schema, model, Model, Document, Types } from 'mongoose';
 import { UserDocument } from './User';
 
 const codeGroundSchema = new Schema(
@@ -6,10 +6,13 @@ const codeGroundSchema = new Schema(
     title: {
       type: String,
       default: 'untitled',
+      required: true,
+      maxLength: 30,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     html: {
       type: String,
@@ -25,21 +28,53 @@ const codeGroundSchema = new Schema(
       default: false,
     },
     creator: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'User',
     },
+    comments: [
+      {
+        comment: {
+          type: String,
+          maxLength: 200,
+          required: true,
+        },
+        user: {
+          type: Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        likes: [
+          {
+            type: Types.ObjectId,
+            ref: 'User',
+          },
+        ],
+      },
+    ],
+    likes: [
+      {
+        type: Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { timestamps: true },
 );
 
 export interface CodeGroundDocument extends Document {
   title: string;
-  user: Schema.Types.ObjectId;
+  user: string;
   html: string;
   css: string;
   js: string;
   forked: boolean;
-  creator: Schema.Types.ObjectId;
+  creator: string;
+  comments: {
+    comment: string;
+    user: string;
+    likes: string[];
+  }[];
+  likes: string[];
   createdAt: Date;
   updatedAt: Date;
 }
