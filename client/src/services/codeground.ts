@@ -6,7 +6,14 @@ import {
 import { UserDocument } from '../../../src/models/User';
 
 interface fetchAllResponse extends AxiosResponse<CodeGroundPopulated[]> {}
-interface SaveResponse extends AxiosResponse<CodeGroundDocument | Error> {}
+interface Response extends AxiosResponse<CodeGroundDocument | Error> {}
+
+export const fetchOne = (id: string): Promise<CodeGroundDocument> => {
+  return axios
+    .get(`/api/code-ground/${id}`)
+    .then((resp: Response) => resp.data)
+    .catch((err) => err);
+};
 
 export const fetchAll = (): Promise<CodeGroundPopulated[]> => {
   return axios
@@ -24,6 +31,6 @@ export const saveCodeGround = (
 ): Promise<CodeGroundDocument> => {
   return axios
     .post('/api/code-ground/', { title, html, css, js, _id })
-    .then((resp: SaveResponse) => resp.data)
+    .then((resp: Response) => resp.data)
     .catch((err) => err);
 };

@@ -36,6 +36,11 @@ export default function NavLeft() {
           <Home size={'1.3em'} />
         </IconWrapper>
       </Link>
+      <Link to="/code-ground">
+        <IconWrapper>
+          <Plus size={'1.3em'} />
+        </IconWrapper>
+      </Link>
     </NavList>
   );
 }

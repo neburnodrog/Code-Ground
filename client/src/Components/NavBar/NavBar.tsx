@@ -20,8 +20,7 @@ export const NavLink = styled.button`
 `;
 
 export const Navbar = styled.nav`
-  /* background: #000211; */
-  background: #050a30;
+  background: #2b2d3b;
   max-height: 5%;
   color: #f4f6fc;
   display: flex;

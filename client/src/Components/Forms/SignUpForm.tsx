@@ -34,7 +34,7 @@ export default function SignUpForm() {
   const validate = (): Errors => {
     const currentErrors = { ...errors };
 
-    if (username.length === 0) {
+    if (username.length === 0 || username.length > 20) {
       currentErrors.username = true;
     } else currentErrors.username = false;
 
@@ -107,7 +107,7 @@ export default function SignUpForm() {
           />
 
           <SmallContainer displayInfo={errors.username}>
-            <Small>Field cannot be empty</Small>
+            <Small>Required. No longer than 20.</Small>
           </SmallContainer>
         </InputGroup>
 

@@ -6,8 +6,8 @@ const StyledSearchBar = styled.div`
   border: 0px;
   padding: 0.4em 0.6em;
   text-align: center;
-  background: #233dff;
-  width: 95%;
+  background: #7e84ae4f;
+  width: 90%;
   margin: 1em;
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@ const Input = styled.input`
   border: 1px solid white;
   padding: 0.4em 0.6em;
   text-align: center;
-  background: #233dff;
+  background: #2b2d3b;
   flex-grow: 5;
   border-radius: 0.2em;
   margin-right: 1em;

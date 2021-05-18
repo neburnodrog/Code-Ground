@@ -4,6 +4,7 @@ import { UserDocument } from '../../../src/models/User';
 
 interface LoginProps {
   setUser: Dispatch<SetStateAction<UserDocument | null>>;
+  notSavedCodeGround: boolean;
 }
 
 export default function Login(props: LoginProps) {

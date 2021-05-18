@@ -13,15 +13,20 @@ import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 import { ProtectedRoute } from './Pages/ProtectedRoute';
 
-const AppContainer = styled.div`
+const AppContainer = styled.main`
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 `;
 
+interface Path {
+  path: string;
+}
+
 function App(props: { user: UserDocument | null }) {
   const [user, setUser] = useState(props.user);
+  const [notSavedCodeGround, setNotSavedCodeGround] = useState(false);
 
   return (
     <AppContainer>
@@ -39,15 +44,34 @@ function App(props: { user: UserDocument | null }) {
         <Route
           exact
           path="/code-ground"
-          render={() => <CodeGround user={user} />}
+          render={() => (
+            <CodeGround
+              user={user}
+              setNotSavedCodeGround={setNotSavedCodeGround}
+              notSavedCodeGround={notSavedCodeGround}
+            />
+          )}
         />
-        <Route exact path="/code-ground/:id" component={CodeGround} />
+        <Route
+          exact
+          path="/code-ground/:id"
+          render={(props) => (
+            <CodeGround
+              id={props.match.params.id}
+              user={user}
+              setNotSavedCodeGround={setNotSavedCodeGround}
+              notSavedCodeGround={notSavedCodeGround}
+            />
+          )}
+        />
         <ProtectedRoute
           exact={true}
           path="/login"
           permission={user ? false : true}
           redirectPath="/profile"
-          render={(props) => <Login setUser={setUser} />}
+          render={(props) => (
+            <Login setUser={setUser} notSavedCodeGround={notSavedCodeGround} />
+          )}
         />
         <ProtectedRoute
           exact={true}

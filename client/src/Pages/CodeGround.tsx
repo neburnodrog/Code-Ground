@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import { saveCodeGround } from '../services/codeground';
+import { fetchOne, saveCodeGround } from '../services/codeground';
 import { CodeGroundDocument } from '../../../src/models/CodeGround';
 import { UserDocument } from '../../../src/models/User';
 import { CodeEditor } from '../Components/CodeGround/CodeEditor';
 import CodeGroundTitle from '../Components/CodeGround/CodeGroundTitle';
 import CodeGroundBar from '../Components/CodeGround/CodeGroundBar';
+
 const CodeGroundWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,8 +33,10 @@ const IframeWrapper = styled.div`
 `;
 
 export interface CodeGroundProps {
+  id?: string;
   user: UserDocument | null;
-  codeGround?: CodeGroundDocument;
+  setNotSavedCodeGround: Dispatch<SetStateAction<boolean>>;
+  notSavedCodeGround: boolean;
 }
 
 const OuterWrapper = styled.div`
@@ -42,16 +45,37 @@ const OuterWrapper = styled.div`
 `;
 
 export default function CodeGround(props: CodeGroundProps) {
-  const codeGround = props.codeGround;
-  const [title, setTitle] = useState(
-    codeGround ? codeGround.title : 'untitled',
-  );
-  const [html, setHtml] = useState(codeGround ? codeGround.html : '');
-  const [css, setCss] = useState(codeGround ? codeGround.css : '');
-  const [js, setJs] = useState(codeGround ? codeGround.js : '');
+  const { id, user, setNotSavedCodeGround, notSavedCodeGround } = props;
+  const [title, setTitle] = useState('untitled');
+  const [html, setHtml] = useState('');
+  const [css, setCss] = useState('');
+  const [js, setJs] = useState('');
   const [srcDoc, setSrcDoc] = useState('');
+  const [creator, setCreator] = useState('');
 
   const defaultCss = '<style>body{margin:0}</style>';
+
+  useEffect(() => {
+    if (notSavedCodeGround) {
+      setTitle(window.localStorage.getItem('title')!);
+      setHtml(window.localStorage.getItem('html')!);
+      setCss(window.localStorage.getItem('css')!);
+      setJs(window.localStorage.getItem('js')!);
+    } else if (id) {
+      fetchOne(id)
+        .then((codeGround) => {
+          setTitle(codeGround.title);
+          setHtml(codeGround.html);
+          setCss(codeGround.css);
+          setJs(codeGround.js);
+          setCreator(codeGround.user);
+        })
+        .catch((err) => console.log(err));
+    } else if (user) {
+      setCreator(user._id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -74,7 +98,13 @@ export default function CodeGround(props: CodeGroundProps) {
     const { user } = props;
 
     if (!user) {
-      <Redirect to="login" />;
+      window.localStorage.setItem('title', title);
+      window.localStorage.setItem('html', html);
+      window.localStorage.setItem('css', css);
+      window.localStorage.setItem('js', js);
+
+      props.setNotSavedCodeGround(true);
+      (() => <Redirect to="login" />)();
     } else {
       saveCodeGround(title, html, css, js, user._id);
     }

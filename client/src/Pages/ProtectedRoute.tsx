@@ -4,6 +4,7 @@ import { Route, Redirect, RouteProps } from 'react-router-dom';
 export type ProtectedRouteProps = {
   permission: boolean;
   redirectPath: string;
+  hasCodeGround?: boolean;
 } & RouteProps;
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {

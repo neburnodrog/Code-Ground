@@ -10,16 +10,20 @@ const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch;
-  flex-grow: 1;
+  align-items: center;
 `;
 
 const ResultsContainer = styled.div`
+  width: 92%;
+  min-height: 80vh;
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-around;
-  margin: 1em;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: space-between;
+  margin: 0em;
+  background: #2b2d3b;
+  border-radius: 2mm;
 `;
 
 const SearchBarContainer = styled(SearchBar)`

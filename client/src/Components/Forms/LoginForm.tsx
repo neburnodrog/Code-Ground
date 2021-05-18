@@ -21,6 +21,7 @@ import {
 
 interface LoginFormProps {
   setUser: Dispatch<SetStateAction<UserDocument | null>>;
+  notSavedCodeGround: boolean;
 }
 
 export default function LoginForm(props: LoginFormProps) {
@@ -37,7 +38,11 @@ export default function LoginForm(props: LoginFormProps) {
           setErrorMessage(resp.message);
         } else {
           props.setUser(resp);
-          <Redirect to="/profile" />;
+          props.notSavedCodeGround ? (
+            <Redirect to="code-grounds" />
+          ) : (
+            <Redirect to="/profile" />
+          );
         }
       })
       .catch((err) => {
