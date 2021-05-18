@@ -22,6 +22,11 @@ const NavList = styled.div`
 
 const IconWrapper = styled(WrapperButton)`
   margin: 0em 1.5em;
+  padding: 0.3em;
+  border-radius: 50%;
+  &:hover {
+    box-shadow: 0px 0px 3px 3px #233dff;
+  }
 `;
 
 export default function NavLeft() {
@@ -33,12 +38,12 @@ export default function NavLeft() {
       />
       <Link to="/">
         <IconWrapper>
-          <Home size={'1.3em'} />
+          <Home size={'1.6em'} />
         </IconWrapper>
       </Link>
       <Link to="/code-ground">
         <IconWrapper>
-          <Plus size={'1.3em'} />
+          <Plus size={'1.6em'} />
         </IconWrapper>
       </Link>
     </NavList>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Save, Plus, PlaceOfWorship } from '@styled-icons/fa-solid';
+import { Save, Plus } from '@styled-icons/fa-solid';
 import { WrapperButton } from '../../Components/StyledComponents/IconsButtons';
 import { UserDocument } from '../../../../src/models/User';
 

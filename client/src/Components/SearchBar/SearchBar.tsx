@@ -6,7 +6,7 @@ const StyledSearchBar = styled.div`
   border: 0px;
   padding: 0.4em 0.6em;
   text-align: center;
-  background: #7e84ae4f;
+  background: #2b2d3b;
   width: 90%;
   margin: 1em;
   display: flex;
@@ -19,7 +19,7 @@ const Input = styled.input`
   border: 1px solid white;
   padding: 0.4em 0.6em;
   text-align: center;
-  background: #2b2d3b;
+  background: #131522;
   flex-grow: 5;
   border-radius: 0.2em;
   margin-right: 1em;
@@ -37,14 +37,8 @@ const Select = styled.select`
   padding: 0.2em 0.4em;
   overflow: hidden;
   border-radius: 0.2em;
-  background: #000211;
+  background: #131522;
   border: 0px;
-`;
-
-const Option = styled.option`
-  &:hover {
-    background: #233dff;
-  }
 `;
 
 interface SearchBarProps {
@@ -72,13 +66,13 @@ export default function SearchBar(props: SearchBarProps) {
       />
       <label htmlFor="category">Search by:</label>
       <Select name="category" id="category" onChange={handleSelectChange}>
-        <Option value="title" selected>
+        <option value="title" selected>
           Title
-        </Option>
-        <Option value="user">Username</Option>
-        <Option value="html">HTML</Option>
-        <Option value="css">CSS</Option>
-        <Option value="js">JS</Option>
+        </option>
+        <option value="user">Username</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="js">JS</option>
       </Select>
     </StyledSearchBar>
   );

@@ -13,14 +13,14 @@ const HomeContainer = styled.div`
   align-items: center;
 `;
 
-const ResultsContainer = styled.div`
+const ResultsContainerOuter = styled.div`
   width: 92%;
   min-height: 80vh;
   display: flex;
   flex-flow: row wrap;
-  align-items: flex-start;
   align-content: flex-start;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   margin: 0em;
   background: #2b2d3b;
   border-radius: 2mm;
@@ -103,7 +103,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           handleSearch={this.handleSearch}
           handleSelect={this.handleSelect}
         />
-        <ResultsContainer>{this.displayResults()}</ResultsContainer>
+        <ResultsContainerOuter>{this.displayResults()}</ResultsContainerOuter>
       </HomeContainer>
     );
   }

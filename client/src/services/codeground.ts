@@ -3,7 +3,7 @@ import {
   CodeGroundPopulated,
   CodeGroundDocument,
 } from '../../../src/models/CodeGround';
-import { UserDocument } from '../../../src/models/User';
+// import { UserDocument } from '../../../src/models/User';
 
 interface fetchAllResponse extends AxiosResponse<CodeGroundPopulated[]> {}
 interface Response extends AxiosResponse<CodeGroundDocument | Error> {}

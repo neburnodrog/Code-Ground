@@ -63,19 +63,21 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  passport.authenticate('local', (err, user: UserDocument | undefined) => {
-    if (err) return res.status(400).json({ message: 'Error logging in' });
+  console.log('back-end login route');
+
+  passport.authenticate('local', (err, user) => {
+    if (err) {
+      console.log('backend auth login route line 70', err);
+      return res.status(400).json({ message: 'Error logging in' });
+    }
 
     if (!user) {
       return res.status(400).json({ message: 'Wrong credentials' });
     }
 
     req.login(user, (err) => {
-      console.log(user);
-
-      console.log(typeof user.favourites);
-
       if (err) {
+        console.log('backend auth login route line 80', err);
         return res.status(500).json({ message: 'Error while logging in' });
       } else {
         return res.status(200).json(user);

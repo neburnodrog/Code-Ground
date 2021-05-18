@@ -24,8 +24,6 @@ function App(props: { user: UserDocument | null }) {
   const [user, setUser] = useState(props.user);
   const [notSavedCodeGround, setNotSavedCodeGround] = useState(false);
 
-  console.log(user);
-
   return (
     <AppContainer>
       <NavBar user={user} setUser={setUser} />

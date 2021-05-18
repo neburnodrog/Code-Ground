@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, FocusEvent, ChangeEvent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import './forms.css';
 import { signup } from '../../services/auth';
 import {
@@ -24,12 +24,13 @@ interface Errors {
   [key: string]: boolean;
 }
 
-export default function SignUpForm() {
+export default function SignUpForm(props: RouteComponentProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<Errors>({});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const validate = (): Errors => {
     const currentErrors = { ...errors };
@@ -67,7 +68,14 @@ export default function SignUpForm() {
       signup(username, email, password)
         .then((resp) => {
           console.log(resp);
-          <Redirect to="/login" />;
+          if (
+            resp.name === 'MongoError' &&
+            resp.keyValue.hasOwnProperty('email')
+          ) {
+            setErrorMessage('DB Error: the provided email already exists');
+          } else {
+            props.history.push('/login');
+          }
         })
         .catch((err) => {
           console.log('error catched in sigupform.tsx line 69', err);
@@ -161,6 +169,8 @@ export default function SignUpForm() {
             <Small>Passwords must match with each other.</Small>
           </SmallContainer>
         </InputGroup>
+
+        {errorMessage ? <Small>{errorMessage}</Small> : <Small></Small>}
 
         <Button type="submit">Join</Button>
       </Form>
