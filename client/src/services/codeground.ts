@@ -56,3 +56,15 @@ export const updateCodeGround = (
     .then((resp) => resp.data)
     .catch((err) => console.log(err));
 };
+
+export const fetchUserGrounds = (
+  userId: string,
+): Promise<CodeGroundPopulated[]> => {
+  return axios
+    .get(`/api/code-ground/user/${userId}`)
+    .then((resp: fetchAllResponse) => {
+      console.log(resp.data);
+      return resp.data;
+    })
+    .catch((err) => err);
+};

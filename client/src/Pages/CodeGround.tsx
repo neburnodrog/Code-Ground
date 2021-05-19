@@ -12,20 +12,28 @@ import { CodeEditor } from '../Components/CodeGround/CodeEditor';
 import CodeGroundTitle from '../Components/CodeGround/CodeGroundTitle';
 import CodeGroundBar from '../Components/CodeGround/CodeGroundBar';
 
-const CodeGroundWrapper = styled.div`
+const CodeGroundAndTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 92vh;
   flex-grow: 1;
 `;
 
-const EditorsWrapper = styled.div`
+const CodeGroundWrapper = styled.div<{ vertical: boolean }>`
   display: flex;
-  justify-content: center;
-  /* flex-flow: column; */
-  width: 100%;
-  max-height: 29vh;
-  flex: 0 0 0;
+  min-height: 92vh;
+  flex-grow: 1;
+
+  ${(props) => (props.vertical ? `flex-flow: row wrap;` : `flex-flow: column`)}
+`;
+
+const EditorsWrapper = styled.div<{ vertical: boolean }>`
+  display: flex;
+  justify-content: flex-start;
+  ${(props) =>
+    props.vertical
+      ? 'flex-direction: column; width: 25%; max-height: 90vh;'
+      : 'flex-direction: row; width: 100%; max-height: 29vh;'}
 `;
 
 const IframeWrapper = styled.div`
@@ -56,6 +64,7 @@ export default function CodeGround(props: CodeGroundProps) {
   const [js, setJs] = useState('');
   const [srcDoc, setSrcDoc] = useState('');
   const [creator, setCreator] = useState('');
+  const [vertical, setVertical] = useState(false);
 
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
@@ -137,40 +146,46 @@ export default function CodeGround(props: CodeGroundProps) {
   ) : (
     <OuterWrapper>
       <CodeGroundBar handleSave={handleSave} user={user} />
-      <CodeGroundWrapper>
-        <CodeGroundTitle title={title} setTitle={setTitle} />
-        <EditorsWrapper>
-          <CodeEditor
-            displayName="HTML"
-            language="xml"
-            value={html}
-            onChange={setHtml}
-          />
-          <CodeEditor
-            displayName="CSS"
-            language="css"
-            value={css}
-            onChange={setCss}
-          />
-          <CodeEditor
-            displayName="JS"
-            language="javascript"
-            value={js}
-            onChange={setJs}
-          />
-        </EditorsWrapper>
-        <IframeWrapper>
-          <iframe
-            srcDoc={srcDoc}
-            title="rendered-ground"
-            frameBorder="0"
-            sandbox="allow-scripts"
-            width="100%"
-            height="100%"
-            style={{ flex: '1 0 0' }}
-          ></iframe>
-        </IframeWrapper>
-      </CodeGroundWrapper>
+      <CodeGroundAndTitleWrapper>
+        <CodeGroundTitle
+          title={title}
+          setTitle={setTitle}
+          setVertical={setVertical}
+        />
+        <CodeGroundWrapper vertical={vertical}>
+          <EditorsWrapper vertical={vertical}>
+            <CodeEditor
+              displayName="HTML"
+              language="xml"
+              value={html}
+              onChange={setHtml}
+            />
+            <CodeEditor
+              displayName="CSS"
+              language="css"
+              value={css}
+              onChange={setCss}
+            />
+            <CodeEditor
+              displayName="JS"
+              language="javascript"
+              value={js}
+              onChange={setJs}
+            />
+          </EditorsWrapper>
+          <IframeWrapper>
+            <iframe
+              srcDoc={srcDoc}
+              title="rendered-ground"
+              frameBorder="0"
+              sandbox="allow-scripts"
+              width="100%"
+              height="100%"
+              style={{ flex: '1 0 0' }}
+            ></iframe>
+          </IframeWrapper>
+        </CodeGroundWrapper>
+      </CodeGroundAndTitleWrapper>
     </OuterWrapper>
   );
 }

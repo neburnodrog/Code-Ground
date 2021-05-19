@@ -2,13 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
-import { UserDocument } from '../../../../src/models/User';
+// import { UserDocument } from '../../../../src/models/User';
 import {
   CodeBranch,
   Bookmark,
   ThumbsUp,
   Comments,
 } from '@styled-icons/fa-solid';
+import { Bookmark as EmptyBookmark } from '@styled-icons/fa-regular';
 import { WrapperButton } from '../StyledComponents/IconsButtons';
 
 const ResultFieldContainer = styled.article`
@@ -24,9 +25,7 @@ const ResultFieldContainer = styled.article`
 `;
 
 const ThumbnailWrapper = styled.div`
-  /* overflow: hidden; */
-  border-bottom-left-radius: 0.2em;
-  border-bottom-right-radius: 0.2em;
+  overflow: hidden;
 `;
 
 const DetailsWrapper = styled.div`
@@ -36,8 +35,9 @@ const DetailsWrapper = styled.div`
   align-items: center;
   flex: 1 0 auto;
   background: #131522;
-  border-top-left-radius: 0.2em;
-  border-top-right-radius: 0.2em;
+  border-top-left-radius: 0.3em;
+  border-top-right-radius: 0.3em;
+  padding: 0.5em 0em;
 `;
 
 const OptionsWrapper = styled.div`
@@ -50,7 +50,7 @@ const OptionsWrapper = styled.div`
 const StyledIframe = styled.iframe`
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   &:after {
     content: '';
@@ -66,18 +66,24 @@ const StyledIframe = styled.iframe`
 const IconWrapper = styled(WrapperButton)`
   margin-top: 0em;
   background: #131522;
-  border-radius: 0.1em;
-  padding: 0.4em;
+  border-radius: 0.2em;
+  padding: 0.5em;
   margin: 0em 0.2em;
 `;
 
-interface ResultFieldProps {
+const Span = styled.span`
+  margin-left: 0.5em;
+`;
+
+export interface GroundCardProps {
   codeGround: CodeGroundPopulated;
-  user: UserDocument | null;
+  userLoggedIn: boolean;
+  userOwnsGround: boolean;
+  isCreator: boolean;
 }
 
-export default function ResultField(props: ResultFieldProps) {
-  const { codeGround, user } = props;
+const GroundCard: React.FC<GroundCardProps> = (props) => {
+  const { codeGround, userLoggedIn, userOwnsGround, isCreator } = props;
 
   const srcDoc = `
   <html>
@@ -89,22 +95,31 @@ export default function ResultField(props: ResultFieldProps) {
   </html>
   `;
 
-  const renderLoggedInButtons = () => {
-    if (user && codeGround.user.username !== user.username) {
-      return (
-        <>
-          <IconWrapper>
-            <ThumbsUp size={'1.2em'} />
-          </IconWrapper>
-          <IconWrapper>
-            <Bookmark size={'1.2em'} />
-          </IconWrapper>
-          <IconWrapper>
-            <CodeBranch size={'1.2em'} />
-          </IconWrapper>
-        </>
-      );
-    } else return null;
+  const renderInteractionButtons = () => {
+    return (
+      <>
+        <IconWrapper>
+          <ThumbsUp size={'1.2em'} />
+          <Span> {codeGround.likes.length}</Span>
+        </IconWrapper>
+
+        <IconWrapper>
+          <Bookmark size={'1.2em'} />
+        </IconWrapper>
+
+        <IconWrapper>
+          <CodeBranch size={'1.2em'} />
+        </IconWrapper>
+      </>
+    );
+  };
+
+  const renderEditOptions = () => {
+    return (
+      <>
+        <small>creator options...</small>
+      </>
+    );
   };
 
   return (
@@ -112,10 +127,8 @@ export default function ResultField(props: ResultFieldProps) {
       <Link to={`/code-ground/${codeGround._id}`}>
         <DetailsWrapper>
           <h4>{codeGround.title}</h4>
-          <small>
-            Created by:{' '}
-            {codeGround.user ? codeGround.user.username : 'Anonymous'}
-          </small>
+          <small>forked by: {codeGround.user.username}</small>
+          <small>created by: {codeGround.creator.username}</small>
         </DetailsWrapper>
       </Link>
 
@@ -129,12 +142,16 @@ export default function ResultField(props: ResultFieldProps) {
       </ThumbnailWrapper>
 
       <OptionsWrapper>
-        {renderLoggedInButtons()}
+        {userLoggedIn && !userOwnsGround ? renderInteractionButtons() : null}
+        {userOwnsGround ? renderEditOptions() : null}
 
         <IconWrapper>
-          <Comments size={'1em'} />
+          <Comments size={'1.2em'} />
+          <Span> {codeGround.comments.length}</Span>
         </IconWrapper>
       </OptionsWrapper>
     </ResultFieldContainer>
   );
-}
+};
+
+export default GroundCard;

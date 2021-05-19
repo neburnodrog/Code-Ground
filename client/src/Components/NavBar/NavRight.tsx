@@ -16,9 +16,9 @@ const NavList = styled.div`
 `;
 
 const ProfileIcon = styled(UserCircle)`
+  position: relative;
   &:hover {
     border-radius: 50%;
-    box-shadow: 0px 0px 3px 3px #233dff;
     transition: 1s;
     color: #f4f6fc;
   }

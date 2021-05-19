@@ -1,5 +1,6 @@
 import Router, { Request, Response } from 'express';
-import CodeGround from '../models/CodeGround';
+import CodeGround, { CodeGroundPopulated } from '../models/CodeGround';
+import User from '../models/User';
 
 const router = Router();
 
@@ -7,6 +8,7 @@ router.get('/', (req: Request, res: Response) => {
   CodeGround.find()
     .sort({ createdAt: -1 })
     .populate('user')
+    .populate('creator')
     .then((codeGrounds) => res.status(200).json(codeGrounds))
     .catch((err) => res.status(400).json(err));
 });
@@ -63,6 +65,26 @@ router.put('/:id', (req: Request, res: Response) => {
 router.delete('/:id', (req: Request, res: Response) => {
   CodeGround.findByIdAndDelete(req.params.id)
     .then(() => res.status(200).json({ message: 'Code Ground deleted.' }))
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get('/user/:id', (req: Request, res: Response) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (user) {
+        console.log(user);
+        CodeGround.find({ user: user._id })
+          .sort({ createdAt: -1 })
+          .populate('user')
+          .populate('creator')
+          .then((codeGrounds) => {
+            console.log(codeGrounds);
+            res.status(200).json(codeGrounds);
+          });
+      } else {
+        res.status(400).json({ message: 'user not found' });
+      }
+    })
     .catch((err) => res.status(400).json(err));
 });
 

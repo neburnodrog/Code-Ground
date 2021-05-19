@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchBar from '../Components/SearchBar/SearchBar';
-import ResultField from '../Components/SearchBar/ResultField';
+import GroundCard from '../Components/CodeGround/CodeGroundCard';
 import { CodeGroundPopulated } from '../../../src/models/CodeGround';
 import { UserDocument } from '../../../src/models/User';
 import { fetchAll } from '../services/codeground';
@@ -13,7 +13,7 @@ const HomeContainer = styled.div`
   align-items: center;
 `;
 
-const ResultsContainerOuter = styled.div`
+export const ResultsContainerOuter = styled.div`
   width: 92%;
   min-height: 80vh;
   display: flex;
@@ -28,6 +28,12 @@ const ResultsContainerOuter = styled.div`
 
 const SearchBarContainer = styled(SearchBar)`
   flex-grow: 1;
+`;
+
+const Loading = styled.h1`
+  text-align: center;
+  font-size: 5em;
+  color: tomato;
 `;
 
 interface HomeState {
@@ -49,7 +55,9 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
   componentDidMount() {
     fetchAll()
-      .then((codeGrounds) => this.setState({ codeGrounds: codeGrounds }))
+      .then((codeGrounds) => {
+        this.setState({ codeGrounds: codeGrounds });
+      })
       .catch((err) => console.log(err));
   }
 
@@ -63,6 +71,8 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
   displayResults = () => {
     const { codeGrounds, search, option } = this.state;
+    const { user } = this.props;
+
     let filtered;
 
     if (option === 'title')
@@ -88,18 +98,30 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
     return filtered
       ? filtered
-          .map((each) => (
-            <ResultField user={this.props.user} codeGround={each} />
+          .map((ground) => (
+            <GroundCard
+              key={ground._id}
+              userLoggedIn={user ? true : false}
+              userOwnsGround={user ? ground.user._id === user._id : false}
+              codeGround={ground}
+              isCreator={user ? user._id === ground.creator._id : false}
+            />
           ))
           .slice(0, 6)
       : null;
   };
 
   render() {
+    const { search, codeGrounds } = this.state;
+
+    if (codeGrounds.length === 0) {
+      return <Loading>Loading</Loading>;
+    }
+
     return (
       <HomeContainer>
         <SearchBarContainer
-          search={this.state.search}
+          search={search}
           handleSearch={this.handleSearch}
           handleSelect={this.handleSelect}
         />

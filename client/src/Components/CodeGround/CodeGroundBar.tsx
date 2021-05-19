@@ -22,7 +22,8 @@ const StyledCodeBar = styled.nav`
 `;
 
 const StyledNew = styled(Plus)`
-  padding: 0.2em;
+  padding: 0.4em;
+  margin-top: 1.9em;
   &:hover {
     background: #233dff;
   }
@@ -30,7 +31,8 @@ const StyledNew = styled(Plus)`
 `;
 
 const StyledSave = styled(Save)`
-  padding: 0.2em;
+  padding: 0.4em;
+  margin-top: 0.5em;
   &:hover {
     background: #233dff;
   }

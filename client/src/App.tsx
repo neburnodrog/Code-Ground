@@ -39,7 +39,7 @@ function App(props: { user: UserDocument | null }) {
           path="/profile"
           permission={user ? true : false}
           redirectPath="/login"
-          component={Profile}
+          render={(props) => <Profile {...props} user={user!} />}
         />
         <Route
           exact

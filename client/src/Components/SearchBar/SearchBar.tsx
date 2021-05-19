@@ -65,10 +65,13 @@ export default function SearchBar(props: SearchBarProps) {
         onChange={handleInputChange}
       />
       <label htmlFor="category">Search by:</label>
-      <Select name="category" id="category" onChange={handleSelectChange}>
-        <option value="title" selected>
-          Title
-        </option>
+      <Select
+        name="category"
+        id="category"
+        onChange={handleSelectChange}
+        defaultValue="title"
+      >
+        <option value="title">Title</option>
         <option value="user">Username</option>
         <option value="html">HTML</option>
         <option value="css">CSS</option>

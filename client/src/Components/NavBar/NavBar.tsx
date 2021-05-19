@@ -20,12 +20,14 @@ export const NavLink = styled.button`
 `;
 
 export const Navbar = styled.nav`
-  background: #2b2d3b;
+  background: #131522;
   max-height: 5%;
   color: #f4f6fc;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid gray;
+  padding: 0.2em;
 `;
 
 const Title = styled.h2`
@@ -41,7 +43,7 @@ export default function NavBar(props: NavBarProps) {
   return (
     <Navbar>
       <NavLeft />
-      <Title>Code Ground</Title>
+      <Title>Codeground</Title>
       <NavRight {...props} />
     </Navbar>
   );
