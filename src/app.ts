@@ -36,10 +36,10 @@ app.use('/api/code-ground', codeGround);
 import auth from './routes/auth';
 app.use('/api/auth', auth);
 
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, './client')));
 
 app.use((req, res) => {
-  res.sendFile(__dirname + '../dist/index.html');
+  res.sendFile(__dirname + './client/index.html');
 });
 
 import handleErrors from './error-handling';
