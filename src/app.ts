@@ -2,6 +2,7 @@ require('dotenv/config');
 require('./db');
 import express from 'express';
 import process from 'process';
+import path from 'path';
 
 /** APP CONFIG */
 const app = express();
@@ -12,7 +13,7 @@ config(app);
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
-const DB_URL = process.env.MONGO_URI || 'mongodb://localhost/code_ground';
+const DB_URL = process.env.MONGODB_URI || 'mongodb://localhost/code_ground';
 
 app.use(
   session({
@@ -32,9 +33,14 @@ passport(app);
 // ROUTES
 import codeGround from './routes/code-ground';
 app.use('/api/code-ground', codeGround);
-
 import auth from './routes/auth';
 app.use('/api/auth', auth);
+
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.use((req, res) => {
+  res.sendFile(__dirname + '../dist/index.html');
+});
 
 import handleErrors from './error-handling';
 handleErrors(app);

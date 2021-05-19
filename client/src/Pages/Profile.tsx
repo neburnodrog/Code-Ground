@@ -15,9 +15,9 @@ const ProfileContainer = styled.div`
 
 const DashboardTitleContainer = styled.div`
   position: relative;
-  width: 20vw;
   background: #2b2d3b;
   display: flex;
+  padding: 0.2em 1em;
   justify-content: center;
   border-top-left-radius: 0.4em;
   border-top-right-radius: 0.4em;
@@ -25,12 +25,17 @@ const DashboardTitleContainer = styled.div`
 
 const TabsContainer = styled.div`
   /* transform: translateY(-1.8em); */
+  display: flex;
+  justify-content: space-evenly;
   background: #2b2d3b;
   padding: 0.2em 1em;
+  border-top-left-radius: 0.4em;
+  border-top-right-radius: 0.4em;
 `;
 
 const H2 = styled.h2`
   background: #2b2d3b;
+  margin: 0.5em 1em;
 `;
 
 interface ProfileProps {
@@ -44,7 +49,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
 
       <DashboardTitleContainer>
         <TabsContainer>
-          <Link to="/dashboard">
+          <Link to="/profile">
             <H2>My Codegrounds</H2>
           </Link>
 
@@ -57,7 +62,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
       <DashboardContainer>
         <Route
           exact
-          path="/dashboard"
+          path="/profile"
           render={(props: RouteComponentProps) => (
             <Dashboard {...props} user={user} />
           )}
