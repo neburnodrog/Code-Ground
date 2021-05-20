@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import GroundCard from '../CodeGround/CodeGroundCard';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
 import { UserDocument } from '../../../../src/models/User';
-import { fetchUserGrounds } from '../../services/codeground';
+import { fetchUserFavourites } from '../../services/users';
+import { RouteComponentProps } from 'react-router-dom';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -27,17 +28,23 @@ const GroundsContainerOuter = styled.div`
   margin-top: 2em;
 `;
 
-interface DashboardProps {
+interface DashboardProps extends RouteComponentProps {
   profileUser: UserDocument;
   user: UserDocument | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
+const FavouritesDashboard: React.FC<DashboardProps> = ({
+  profileUser,
+  user,
+  ...rest
+}) => {
   const [codeGrounds, setCodeGrounds] = useState([] as CodeGroundPopulated[]);
 
   useEffect(() => {
-    fetchUserGrounds(profileUser._id)
-      .then((codeGrounds: CodeGroundPopulated[]) => setCodeGrounds(codeGrounds))
+    fetchUserFavourites(profileUser._id)
+      .then((codeGrounds: CodeGroundPopulated[]) => {
+        setCodeGrounds(codeGrounds);
+      })
       .catch((err: Error) => console.log(err));
   }, []);
 
@@ -49,12 +56,14 @@ const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
         userOwnsGround={user ? ground.user._id === user._id : false}
         codeGround={ground}
         liked={user ? ground.likes.includes(user._id) : false}
-        favourited={user ? user.favourites.includes(ground._id) : false}
+        favourited={user ? profileUser.favourites.includes(ground._id) : false}
+        {...rest}
       />
     ));
   };
 
-  if (!codeGrounds) return <h1>Loading</h1>;
+  if (codeGrounds === undefined) return <h1>Loading</h1>;
+  if (codeGrounds === null) return <h1>No Favourites yet</h1>;
 
   return (
     <DashboardContainer>
@@ -63,4 +72,4 @@ const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
   );
 };
 
-export default Dashboard;
+export default FavouritesDashboard;

@@ -40,11 +40,11 @@ app.use('/api/cloudinary', cloudinary);
 import users from './routes/users';
 app.use('/api/users', users);
 
-// app.use(express.static(path.join(__dirname, '/client')));
+app.use(express.static(path.join(__dirname, '/client')));
 
-// app.use((req, res) => {
-//   res.sendFile(__dirname + '/client/index.html');
-// });
+app.use((req, res) => {
+  res.sendFile(__dirname + '/client/index.html');
+});
 
 import handleErrors from './error-handling';
 handleErrors(app);

@@ -65,7 +65,9 @@ router.put('/:id', (req: Request, res: Response) => {
 
 router.delete('/:id', (req: Request, res: Response) => {
   CodeGround.findByIdAndDelete(req.params.id)
-    .then(() => res.status(200).json({ message: 'Code Ground deleted.' }))
+    .then((ground) =>
+      res.status(200).json({ message: 'Code Ground deleted.', ground }),
+    )
     .catch((err) => res.status(400).json(err));
 });
 
@@ -84,6 +86,20 @@ router.get('/user/:id', (req: Request, res: Response) => {
           });
       } else {
         res.status(400).json({ message: 'user not found' });
+      }
+    })
+    .catch((err) => res.status(400).json(err));
+});
+
+router.post('/fork/:userId', (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  CodeGround.create({ ...req.body, forked: true, user: userId })
+    .then((codeGround) => {
+      if (!codeGround) {
+        res.status(400).json({ message: `Code ground not created` });
+      } else {
+        res.status(200).json(codeGround);
       }
     })
     .catch((err) => res.status(400).json(err));

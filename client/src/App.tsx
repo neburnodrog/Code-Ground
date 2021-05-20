@@ -13,6 +13,7 @@ import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 import { ProtectedRoute } from './Pages/ProtectedRoute';
 import ProfileEdit from './Components/Profile/ProfileEdit';
+import Favourites from './Pages/Favourites';
 
 const AppContainer = styled.main`
   height: 100%;
@@ -100,6 +101,12 @@ const App: FC<AppProps> = (props) => {
           render={(props) => (
             <ProfileEdit {...props} user={user!} setUser={setUser} />
           )}
+        />
+
+        <Route
+          exact
+          path="/profile/:userId/favourites"
+          render={(props) => <Favourites {...props} user={user} />}
         />
 
         <Redirect from="/" to="/home" />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
 // import { UserDocument } from '../../../../src/models/User';
@@ -12,7 +12,12 @@ import {
 } from '@styled-icons/fa-solid';
 import { WrapperButton } from '../StyledComponents/IconsButtons';
 import { Small } from '../StyledComponents/FormComponents';
-import { dislikeCodeGround, likeCodeGround } from '../../services/codeground';
+import {
+  deleteGround,
+  dislikeCodeGround,
+  forkCodeGround,
+  likeCodeGround,
+} from '../../services/codeground';
 import { addToFavourites, removeFromFavourites } from '../../services/users';
 import { UserDocument } from '../../../../src/models/User';
 
@@ -107,7 +112,7 @@ const StyledHeart = styled(Heart)<{ favourited: boolean }>`
   ${(props) => (props.favourited ? 'color:#e23131' : 'color: inherit')}
 `;
 
-export interface GroundCardProps {
+export interface GroundCardProps extends RouteComponentProps {
   codeGround: CodeGroundPopulated;
   user: UserDocument | null;
   userOwnsGround: boolean;
@@ -119,6 +124,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   const { codeGround, user, userOwnsGround } = props;
   const [like, setLike] = useState(props.liked);
   const [favourite, setFavourite] = useState(props.favourited);
+  const [deleted, setDeleted] = useState(false);
 
   const srcDoc = `
   <html>
@@ -167,6 +173,24 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
     }
   };
 
+  const handleDelete = () => {
+    deleteGround(codeGround._id)
+      .then(() => {
+        setDeleted(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleFork = () => {
+    forkCodeGround(codeGround, user!._id)
+      .then((ground) => {
+        console.log(ground);
+        console.log(props.history);
+        props.history.push(`/code-ground/${ground._id}`);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const renderInteractionButtons = () => {
     return (
       <>
@@ -179,7 +203,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
           <StyledHeart size="1.2em" favourited={favourite} />
         </IconWrapper>
 
-        <IconWrapper>
+        <IconWrapper onClick={handleFork}>
           <CodeBranch size="1.2em" />
         </IconWrapper>
       </>
@@ -189,7 +213,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   const renderEditOptions = () => {
     return (
       <>
-        <IconWrapper>
+        <IconWrapper onClick={handleDelete}>
           <TrashAlt size="1.2em" />
         </IconWrapper>
       </>
@@ -226,6 +250,8 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
       </>
     );
   };
+
+  if (deleted) return null;
 
   return (
     <ResultFieldContainer>

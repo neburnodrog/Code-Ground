@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const CodeGround_1 = __importDefault(require("../models/CodeGround"));
 const User_1 = __importDefault(require("../models/User"));
 const router = express_1.default();
+
 router.get('/', (req, res) => {
     CodeGround_1.default.find()
         .sort({ createdAt: -1 })
@@ -15,6 +16,7 @@ router.get('/', (req, res) => {
         .then((codeGrounds) => res.status(200).json(codeGrounds))
         .catch((err) => res.status(400).json(err));
 });
+
 router.post('/', (req, res) => {
     const { title, user, html, css, js, forked, creator } = req.body;
     CodeGround_1.default.create({
@@ -29,6 +31,7 @@ router.post('/', (req, res) => {
         .then((codeGround) => res.status(200).json(codeGround))
         .catch((err) => res.status(400).json(err));
 });
+
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     CodeGround_1.default.findById(id)
@@ -44,6 +47,7 @@ router.get('/:id', (req, res) => {
     })
         .catch((err) => res.status(400).json(err));
 });
+
 router.put('/:id', (req, res) => {
     const { title, html, css, js } = req.body;
     CodeGround_1.default.findByIdAndUpdate(req.params.id, {
@@ -55,11 +59,13 @@ router.put('/:id', (req, res) => {
         .then((codeGround) => res.status(200).json(codeGround))
         .catch((err) => res.status(400).json(err));
 });
+
 router.delete('/:id', (req, res) => {
     CodeGround_1.default.findByIdAndDelete(req.params.id)
         .then(() => res.status(200).json({ message: 'Code Ground deleted.' }))
         .catch((err) => res.status(400).json(err));
 });
+
 router.get('/user/:id', (req, res) => {
     User_1.default.findById(req.params.id)
         .then((user) => {

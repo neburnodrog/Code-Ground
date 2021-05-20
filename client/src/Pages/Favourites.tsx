@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Dashboard from '../Components/Profile/Dashboard';
+import FavouriteDashboard from '../Components/Profile/FavouriteDashboard';
 import Header from '../Components/Profile/Header';
 import { UserDocument } from '../../../src/models/User';
 import { ResultsContainerOuter as DashboardContainer } from './Home';
@@ -46,8 +46,7 @@ interface ProfileProps extends RouteComponentProps {
   // setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
-const Profile: React.FC<ProfileProps> = (props) => {
-  const { user } = props;
+const Profile: React.FC<ProfileProps> = ({ user, ...rest }) => {
   const { userId } = useParams<{ userId: string }>();
   const { path, url } = useRouteMatch();
   const [profileUser, setProfileUser] = useState<UserDocument | null>();
@@ -78,13 +77,13 @@ const Profile: React.FC<ProfileProps> = (props) => {
       <Header user={profileUser} />
 
       <TabsContainer>
-        <Link to={`${url}/favourites`}>
+        <Link to={`/profile/${userId}/favourites`}>
           <TabContainer>
             <H2>Favourites</H2>
           </TabContainer>
         </Link>
 
-        <Link to={`${url}`}>
+        <Link to={`/profile/${userId}`}>
           <TabContainer>
             <H2>
               {userIsProfileOwner() ? 'My' : `${profileUser.username}`}{' '}
@@ -94,7 +93,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
         </Link>
 
         {userIsProfileOwner() && (
-          <Link to={`${url}/edit`}>
+          <Link to={`/profile/${userId}/edit`}>
             <TabContainer>
               <H2>New Profile Pic</H2>
             </TabContainer>
@@ -103,7 +102,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
       </TabsContainer>
 
       <DashboardContainer>
-        <Dashboard profileUser={profileUser} user={user} />
+        <FavouriteDashboard {...rest} profileUser={profileUser} user={user} />
       </DashboardContainer>
     </ProfileContainer>
   );

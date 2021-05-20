@@ -16,6 +16,13 @@ export const fetchOne = (id: string): Promise<CodeGroundDocument> => {
     .catch((err) => err);
 };
 
+export const deleteGround = (id: string): Promise<CodeGroundDocument> => {
+  return axios
+    .delete(`/api/code-ground/${id}`)
+    .then((resp: Response) => resp.data)
+    .catch((err) => err);
+};
+
 export const fetchAll = (): Promise<CodeGroundPopulated[]> => {
   return axios
     .get('/api/code-ground/')
@@ -82,4 +89,16 @@ export const dislikeCodeGround = (codeGroundId: string, userId: string) => {
     .delete(`/api/code-ground/${codeGroundId}/like/${userId}`)
     .then((resp: AxiosResponse) => console.log(resp.data))
     .catch((err) => err);
+};
+
+export const forkCodeGround = (
+  codeGround: CodeGroundPopulated,
+  userId: string,
+) => {
+  const { title, html, js, css, creator } = codeGround;
+
+  return axios
+    .post(`/api/code-ground/fork/${userId}`, { title, html, js, css, creator })
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 };

@@ -11,16 +11,23 @@ export const getUser = (id: string): Promise<UserDocument | null> => {
     .catch((err: Error) => console.log(err));
 };
 
+export const fetchUserFavourites = (userId: string) => {
+  return axios
+    .get(`/api/users/${userId}/favourites/`)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+};
+
 export const addToFavourites = (userId: string, codeGroundId: string) => {
   return axios
-    .get(`api/users/${userId}/favourites/${codeGroundId}`)
+    .get(`/api/users/${userId}/favourites/${codeGroundId}`)
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
 };
 
 export const removeFromFavourites = (userId: string, codeGroundId: string) => {
   return axios
-    .get(`api/users/${userId}/favourites/${codeGroundId}`)
+    .get(`/api/users/${userId}/favourites/${codeGroundId}`)
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
 };

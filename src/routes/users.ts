@@ -16,6 +16,24 @@ router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
+  '/:userId/favourites/',
+  (req: Request, res: Response, next: NextFunction) => {
+    User.findById(req.params.userId)
+      .populate({ path: 'favourites', populate: { path: 'user' } })
+      .then((user) => {
+        if (!user) {
+          res.status(400).json({ message: 'User not found' });
+          return;
+        }
+        console.log(user.favourites);
+
+        res.status(200).json(user.favourites);
+      })
+      .catch((err: Error) => next(err));
+  },
+);
+
+router.get(
   '/:userId/favourites/:id',
   (req: Request, res: Response, next: NextFunction) => {
     const { userId, id } = req.params;
