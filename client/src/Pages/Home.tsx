@@ -98,19 +98,17 @@ export default class Home extends React.Component<HomeProps, HomeState> {
       );
 
     return filtered
-      ? filtered
-          .map((ground) => (
-            <GroundCard
-              key={ground._id}
-              user={user}
-              userOwnsGround={user ? ground.user._id === user._id : false}
-              codeGround={ground}
-              liked={user ? ground.likes.includes(user._id) : false}
-              favourited={user ? user.favourites.includes(ground._id) : false}
-              {...rest}
-            />
-          ))
-          .slice(0, 6)
+      ? filtered.map((ground) => (
+          <GroundCard
+            key={ground._id}
+            user={user}
+            userOwnsGround={user ? ground.user._id === user._id : false}
+            codeGround={ground}
+            liked={user ? ground.likes.includes(user._id) : false}
+            favourited={user ? user.favourites.includes(ground._id) : false}
+            {...rest}
+          />
+        ))
       : null;
   };
 

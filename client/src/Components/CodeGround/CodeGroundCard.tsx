@@ -137,6 +137,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   `;
 
   const handleLike = () => {
+    if (!user) return;
     if (like) {
       setLike(false);
       dislikeCodeGround(codeGround._id, user!._id)
@@ -160,6 +161,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   };
 
   const handleFavourite = () => {
+    if (!user) return;
     if (favourite) {
       setFavourite(false);
       removeFromFavourites(user!._id, codeGround._id)
@@ -174,6 +176,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   };
 
   const handleDelete = () => {
+    if (!user) return;
     deleteGround(codeGround._id)
       .then(() => {
         setDeleted(true);
@@ -182,6 +185,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   };
 
   const handleFork = () => {
+    if (!user) return;
     forkCodeGround(codeGround, user!._id)
       .then((ground) => {
         console.log(ground);
@@ -272,7 +276,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
       </ThumbnailWrapper>
 
       <OptionsWrapper>
-        {user && !userOwnsGround ? renderInteractionButtons() : null}
+        {!user || !userOwnsGround ? renderInteractionButtons() : null}
         {userOwnsGround ? renderEditOptions() : null}
 
         <IconWrapper>
