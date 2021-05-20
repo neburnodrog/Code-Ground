@@ -1,4 +1,5 @@
-import Router, { Request, Response } from 'express';
+import Router, { NextFunction, Request, Response } from 'express';
+import { Types } from 'mongoose';
 import CodeGround, { CodeGroundPopulated } from '../models/CodeGround';
 import User from '../models/User';
 
@@ -87,5 +88,41 @@ router.get('/user/:id', (req: Request, res: Response) => {
     })
     .catch((err) => res.status(400).json(err));
 });
+
+router.get(
+  '/:id/like/:userId',
+  (req: Request, res: Response, next: NextFunction) => {
+    const { userId, id } = req.params;
+
+    CodeGround.findOneAndUpdate(
+      { _id: id },
+      { $addToSet: { likes: Types.ObjectId(userId) } },
+      { new: true },
+    )
+      .then((ground) => {
+        if (!ground) res.status(400).json({ message: 'Codeground not found' });
+        else res.status(200).json({ message: 'Codeground liked' });
+      })
+      .catch((err) => next(err));
+  },
+);
+
+router.delete(
+  '/:id/like/:userId',
+  (req: Request, res: Response, next: NextFunction) => {
+    const { userId, id } = req.params;
+
+    CodeGround.findOneAndUpdate(
+      { _id: id },
+      { $pull: { likes: Types.ObjectId(userId) } },
+      { new: true },
+    )
+      .then((ground) => {
+        if (!ground) res.status(400).json({ message: 'Codeground not found' });
+        else res.status(200).json({ message: 'Codeground disliked' });
+      })
+      .catch((err) => next(err));
+  },
+);
 
 export default router;

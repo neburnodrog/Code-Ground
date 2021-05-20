@@ -72,9 +72,9 @@ export interface CodeGroundDocument extends Document {
   comments: {
     comment: string;
     user: string;
-    likes: string[];
+    likes: Types.Array<Types.ObjectId>;
   }[];
-  likes: string[];
+  likes: Types.Array<Types.ObjectId>;
   createdAt: Date;
   updatedAt: Date;
 }

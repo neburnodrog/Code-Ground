@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { error } from 'console';
 import {
   CodeGroundPopulated,
   CodeGroundDocument,
@@ -66,5 +67,19 @@ export const fetchUserGrounds = (
       console.log(resp.data);
       return resp.data;
     })
+    .catch((err) => err);
+};
+
+export const likeCodeGround = (codeGroundId: string, userId: string) => {
+  return axios
+    .get(`/api/code-ground/${codeGroundId}/like/${userId}`)
+    .then((resp: AxiosResponse) => console.log(resp.data))
+    .catch((err) => err);
+};
+
+export const dislikeCodeGround = (codeGroundId: string, userId: string) => {
+  return axios
+    .delete(`/api/code-ground/${codeGroundId}/like/${userId}`)
+    .then((resp: AxiosResponse) => console.log(resp.data))
     .catch((err) => err);
 };

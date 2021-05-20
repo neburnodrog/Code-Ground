@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, RouteComponentProps, Redirect } from 'react-router-dom';
 import { UserDocument } from '../../src/models/User';
 
 // COMPONENTS
@@ -12,6 +12,7 @@ import SignUp from './Pages/SignUp';
 import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 import { ProtectedRoute } from './Pages/ProtectedRoute';
+import ProfileEdit from './Components/Profile/ProfileEdit';
 
 const AppContainer = styled.main`
   height: 100%;
@@ -20,7 +21,11 @@ const AppContainer = styled.main`
   padding: 0;
 `;
 
-function App(props: { user: UserDocument | null }) {
+interface AppProps extends RouteComponentProps {
+  user: UserDocument | null;
+}
+
+const App: FC<AppProps> = (props) => {
   const [user, setUser] = useState(props.user);
   const [notSavedCodeGround, setNotSavedCodeGround] = useState(false);
 
@@ -31,16 +36,10 @@ function App(props: { user: UserDocument | null }) {
       <Switch>
         <Route
           exact
-          path="/"
+          path="/home"
           render={(props) => <Home {...props} user={user} />}
         />
-        <ProtectedRoute
-          exact={true}
-          path="/profile"
-          permission={user ? true : false}
-          redirectPath="/login"
-          render={(props) => <Profile {...props} user={user!} />}
-        />
+
         <Route
           exact
           path="/code-ground"
@@ -67,11 +66,11 @@ function App(props: { user: UserDocument | null }) {
           )}
         />
         <ProtectedRoute
-          exact={true}
+          exact
           path="/login"
           permission={user ? false : true}
           redirectPath="/profile"
-          render={(props) => (
+          render={(props: RouteComponentProps) => (
             <Login
               {...props}
               setUser={setUser}
@@ -80,16 +79,35 @@ function App(props: { user: UserDocument | null }) {
           )}
         />
         <ProtectedRoute
-          exact={true}
+          exact
           path="/signup"
           permission={user ? false : true}
           redirectPath="/profile"
           component={SignUp}
         />
+
+        <Route
+          exact
+          path="/profile/:userId"
+          render={(props) => <Profile {...props} user={user} />}
+        />
+
+        <ProtectedRoute
+          exact={true}
+          path="/profile/:userId/edit"
+          permission={user ? true : false}
+          redirectPath="/login"
+          render={(props) => (
+            <ProfileEdit {...props} user={user!} setUser={setUser} />
+          )}
+        />
+
+        <Redirect from="/" to="/home" />
+
         <Route component={NotFound} />
       </Switch>
     </AppContainer>
   );
-}
+};
 
 export default App;

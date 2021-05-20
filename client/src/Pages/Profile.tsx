@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Dashboard from '../Components/Profile/Dashboard';
 import Header from '../Components/Profile/Header';
-import ProfileEdit from '../Components/Profile/ProfileEdit';
 import { UserDocument } from '../../../src/models/User';
 import { ResultsContainerOuter as DashboardContainer } from './Home';
-import { Link, Route, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, useParams } from 'react-router-dom';
+import { getUser } from '../services/users';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -13,68 +13,85 @@ const ProfileContainer = styled.div`
   align-items: center;
 `;
 
-const DashboardTitleContainer = styled.div`
-  position: relative;
-  background: #2b2d3b;
-  display: flex;
-  padding: 0.2em 1em;
-  justify-content: center;
-  border-top-left-radius: 0.4em;
-  border-top-right-radius: 0.4em;
-`;
-
 const TabsContainer = styled.div`
-  /* transform: translateY(-1.8em); */
   display: flex;
-  justify-content: space-evenly;
-  background: #2b2d3b;
-  padding: 0.2em 1em;
+  justify-content: center;
+  padding: 0em 1em;
   border-top-left-radius: 0.4em;
   border-top-right-radius: 0.4em;
+  width: 60%;
 `;
 
-const H2 = styled.h2`
+const TabContainer = styled.div`
+  margin: 0em 1em;
+  padding: 0.3em 0.8em;
   background: #2b2d3b;
-  margin: 0.5em 1em;
+  border-top-left-radius: 0.4em;
+  border-top-right-radius: 0.4em;
+  min-width: 13em;
 `;
 
-interface ProfileProps {
-  user: UserDocument;
+const H2 = styled.h3`
+  margin: 0.3em 1em;
+  text-align: center;
+`;
+
+interface ProfileProps extends RouteComponentProps {
+  user: UserDocument | null;
+  // setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
-const Profile: React.FC<ProfileProps> = ({ user }) => {
+const Profile: React.FC<ProfileProps> = (props) => {
+  const { user } = props;
+  const { userId } = useParams<{ userId: string }>();
+  const [profileUser, setProfileUser] = useState<UserDocument | null>();
+
+  useEffect(() => {
+    getUser(userId)
+      .then((profileUser) => {
+        if (!profileUser) {
+          setProfileUser(null);
+          return;
+        }
+        setProfileUser(profileUser);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const userIsProfileOwner = () => {
+    if (!user) return false;
+    if (!profileUser) return false;
+
+    return profileUser._id === user._id;
+  };
+
+  if (profileUser === null) return <h1>User not found</h1>;
+  if (profileUser === undefined) return <h1>Loading</h1>;
   return (
     <ProfileContainer>
-      <Header user={user} />
+      <Header user={profileUser} />
 
-      <DashboardTitleContainer>
-        <TabsContainer>
-          <Link to="/profile">
-            <H2>My Codegrounds</H2>
-          </Link>
+      <TabsContainer>
+        <Link to="/profile">
+          <TabContainer>
+            <H2>
+              {userIsProfileOwner() ? 'My' : `${profileUser.username}`}{' '}
+              Codegrounds
+            </H2>
+          </TabContainer>
+        </Link>
 
-          <Link to="/edit-profile">
-            <H2>Edit Profile</H2>
+        {userIsProfileOwner() && (
+          <Link to={`/profile/edit/${user!._id}`}>
+            <TabContainer>
+              <H2>New Profile Pic</H2>
+            </TabContainer>
           </Link>
-        </TabsContainer>
-      </DashboardTitleContainer>
+        )}
+      </TabsContainer>
 
       <DashboardContainer>
-        <Route
-          exact
-          path="/profile"
-          render={(props: RouteComponentProps) => (
-            <Dashboard {...props} user={user} />
-          )}
-        />
-
-        <Route
-          exact
-          path="/edit-profile"
-          render={(props: RouteComponentProps) => (
-            <ProfileEdit {...props} user={user} />
-          )}
-        />
+        <Dashboard profileUser={profileUser} user={user} />
       </DashboardContainer>
     </ProfileContainer>
   );

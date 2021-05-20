@@ -10,6 +10,7 @@ const DashboardContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
 `;
 
 const GroundsContainerOuter = styled.div`
@@ -23,17 +24,19 @@ const GroundsContainerOuter = styled.div`
   margin: 0em;
   background: #2b2d3b;
   border-radius: 2mm;
+  margin-top: 2em;
 `;
 
 interface DashboardProps {
-  user: UserDocument;
+  profileUser: UserDocument;
+  user: UserDocument | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ user }) => {
+const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
   const [codeGrounds, setCodeGrounds] = useState([] as CodeGroundPopulated[]);
 
   useEffect(() => {
-    fetchUserGrounds(user._id)
+    fetchUserGrounds(profileUser._id)
       .then((codeGrounds: CodeGroundPopulated[]) => setCodeGrounds(codeGrounds))
       .catch((err: Error) => console.log(err));
   }, []);
@@ -41,10 +44,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const renderCards = () => {
     return codeGrounds.map((ground) => (
       <GroundCard
-        userLoggedIn={true}
-        userOwnsGround={true}
+        key={ground._id}
+        user={user}
+        userOwnsGround={user ? ground.user._id === user._id : false}
         codeGround={ground}
-        isCreator={ground.user._id === ground.creator._id}
+        liked={user ? ground.likes.includes(user._id) : false}
+        favourited={user ? user.favourites.includes(ground._id) : false}
       />
     ));
   };

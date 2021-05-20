@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import axios from 'axios';
 
 import { UserDocument } from '../../src/models/User';
@@ -13,11 +13,11 @@ axios
     const user: UserDocument = resp.data;
 
     ReactDOM.render(
-      <Router>
+      <BrowserRouter>
         <React.StrictMode>
-          <App user={user} />
+          <Route path="/" render={(props) => <App {...props} user={user} />} />
         </React.StrictMode>
-      </Router>,
+      </BrowserRouter>,
       document.getElementById('root'),
     );
   })

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from './NavBar';
 import { Link, Redirect } from 'react-router-dom';
-import { UserCircle, SignOutAlt, SignInAlt } from '@styled-icons/fa-solid';
+import { SignOutAlt, SignInAlt } from '@styled-icons/fa-solid';
 import { NavBarProps } from './NavBar';
 import { logout } from '../../services/auth';
 
@@ -15,12 +15,14 @@ const NavList = styled.div`
   width: 30vw;
 `;
 
-const ProfileIcon = styled(UserCircle)`
+const ProfileIcon = styled.img`
   position: relative;
+  border-radius: 50%;
+  width: 1.8em;
   &:hover {
-    border-radius: 50%;
     transition: 1s;
     color: #f4f6fc;
+    box-shadow: 0px 0px 0.3em 0.3em #233dff;
   }
 `;
 
@@ -42,8 +44,8 @@ export default function NavRight(props: NavBarProps) {
           Log Out <SignOutAlt size={'1em'} />
         </NavLink>
 
-        <Link to="/profile" style={{ marginLeft: '1em' }}>
-          <ProfileIcon size={'1.3em'} />
+        <Link to={`/profile/${props.user!._id}`} style={{ marginLeft: '1em' }}>
+          <ProfileIcon src={props.user?.avatar.path} />
         </Link>
       </>
     );

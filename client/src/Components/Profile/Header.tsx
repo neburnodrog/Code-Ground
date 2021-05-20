@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { UserDocument } from '../../../../src/models/User';
+import { Edit } from '@styled-icons/fa-solid';
 
 interface HeaderProps {
   user: UserDocument;
@@ -12,6 +13,7 @@ const HeaderContainer = styled.section`
   justify-content: center;
   align-items: center;
   padding: 3em;
+  position: relative;
 `;
 
 const H1 = styled.h1`
@@ -27,7 +29,10 @@ const ProfilePic = styled.img`
 const Header: FC<HeaderProps> = ({ user }) => {
   return (
     <HeaderContainer>
-      <H1>Hello {user.username}</H1>
+      <H1>
+        {user.username}
+        {/* <Edit size="1em" /> */}
+      </H1>
       <ProfilePic src={user.avatar.path} alt="" />
     </HeaderContainer>
   );

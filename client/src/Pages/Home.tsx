@@ -101,10 +101,11 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           .map((ground) => (
             <GroundCard
               key={ground._id}
-              userLoggedIn={user ? true : false}
+              user={user}
               userOwnsGround={user ? ground.user._id === user._id : false}
               codeGround={ground}
-              isCreator={user ? user._id === ground.creator._id : false}
+              liked={user ? ground.likes.includes(user._id) : false}
+              favourited={user ? user.favourites.includes(ground._id) : false}
             />
           ))
           .slice(0, 6)

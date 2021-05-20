@@ -1,6 +1,6 @@
-const cloudinary = await import('cloudinary').v2;
-const { CloudinaryStorage } = await import('multer-storage-cloudinary');
-const multer = await import('multer');
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
 import process from 'process';
 
 cloudinary.config({
@@ -13,7 +13,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'code-ground',
-    allowed_formats: 'jpg, jpeg, png, gif',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
   },
 });
 

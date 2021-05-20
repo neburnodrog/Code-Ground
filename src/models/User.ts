@@ -36,7 +36,7 @@ const userSchema = new Schema(
       },
       cloudinaryId: { type: String },
     },
-    bookmarked: [
+    favourites: [
       {
         type: Types.ObjectId,
         ref: 'CodeGround',

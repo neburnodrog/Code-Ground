@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
 // import { UserDocument } from '../../../../src/models/User';
 import {
   CodeBranch,
-  Bookmark,
+  Heart,
   ThumbsUp,
   Comments,
+  TrashAlt,
 } from '@styled-icons/fa-solid';
-import { Bookmark as EmptyBookmark } from '@styled-icons/fa-regular';
 import { WrapperButton } from '../StyledComponents/IconsButtons';
+import { Small } from '../StyledComponents/FormComponents';
+import { dislikeCodeGround, likeCodeGround } from '../../services/codeground';
+import { addToFavourites, removeFromFavourites } from '../../services/users';
+import { UserDocument } from '../../../../src/models/User';
 
 const ResultFieldContainer = styled.article`
   display: flex;
@@ -75,15 +79,46 @@ const Span = styled.span`
   margin-left: 0.5em;
 `;
 
+const Br = styled.br`
+  margin: 0;
+`;
+
+const H4 = styled.h4`
+  color: lightblue;
+  &:hover {
+    color: #58b487;
+    transition: 1s;
+  }
+`;
+
+const LinkSpan = styled(Link)`
+  color: lightblue;
+  &:hover {
+    color: #58b487;
+    transition: 1s;
+  }
+`;
+
+const StyledThumbsUp = styled(ThumbsUp)<{ liked: boolean }>`
+  ${(props) => (props.liked ? 'color:#3f9c3f' : 'color: inherit')}
+`;
+
+const StyledHeart = styled(Heart)<{ favourited: boolean }>`
+  ${(props) => (props.favourited ? 'color:#e23131' : 'color: inherit')}
+`;
+
 export interface GroundCardProps {
   codeGround: CodeGroundPopulated;
-  userLoggedIn: boolean;
+  user: UserDocument | null;
   userOwnsGround: boolean;
-  isCreator: boolean;
+  liked: boolean;
+  favourited: boolean;
 }
 
 const GroundCard: React.FC<GroundCardProps> = (props) => {
-  const { codeGround, userLoggedIn, userOwnsGround, isCreator } = props;
+  const { codeGround, user, userOwnsGround } = props;
+  const [like, setLike] = useState(props.liked);
+  const [favourite, setFavourite] = useState(props.favourited);
 
   const srcDoc = `
   <html>
@@ -95,20 +130,57 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   </html>
   `;
 
+  const handleLike = () => {
+    if (like) {
+      setLike(false);
+      dislikeCodeGround(codeGround._id, user!._id)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    } else {
+      setLike(true);
+      likeCodeGround(codeGround._id, user!._id)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const calcNumberOfLikes = () => {
+    const numberOfLikesFromProps = codeGround.likes.length;
+    if (props.liked) {
+      return !like ? numberOfLikesFromProps - 1 : numberOfLikesFromProps;
+    } else {
+      return like ? numberOfLikesFromProps + 1 : numberOfLikesFromProps;
+    }
+  };
+
+  const handleFavourite = () => {
+    if (favourite) {
+      setFavourite(false);
+      removeFromFavourites(user!._id, codeGround._id)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    } else {
+      setFavourite(true);
+      addToFavourites(user!._id, codeGround._id)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    }
+  };
+
   const renderInteractionButtons = () => {
     return (
       <>
-        <IconWrapper>
-          <ThumbsUp size={'1.2em'} />
-          <Span> {codeGround.likes.length}</Span>
+        <IconWrapper onClick={handleLike}>
+          <StyledThumbsUp size="1.2em" liked={like} />
+          <Span>{calcNumberOfLikes()}</Span>
+        </IconWrapper>
+
+        <IconWrapper onClick={handleFavourite}>
+          <StyledHeart size="1.2em" favourited={favourite} />
         </IconWrapper>
 
         <IconWrapper>
-          <Bookmark size={'1.2em'} />
-        </IconWrapper>
-
-        <IconWrapper>
-          <CodeBranch size={'1.2em'} />
+          <CodeBranch size="1.2em" />
         </IconWrapper>
       </>
     );
@@ -117,20 +189,52 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   const renderEditOptions = () => {
     return (
       <>
-        <small>creator options...</small>
+        <IconWrapper>
+          <TrashAlt size="1.2em" />
+        </IconWrapper>
+      </>
+    );
+  };
+
+  const displayAuthors = () => {
+    return codeGround.user.username !== codeGround.creator.username ? (
+      <>
+        <Small>
+          by:{' '}
+          <LinkSpan to={`/profile/${codeGround.user._id}`}>
+            {codeGround.user.username}
+          </LinkSpan>
+        </Small>
+        <Small>
+          originally by:{' '}
+          <LinkSpan to={`/profile/${codeGround.creator._id}`}>
+            {codeGround.creator.username}
+          </LinkSpan>
+        </Small>
+      </>
+    ) : (
+      <>
+        <Small>
+          by:{' '}
+          <LinkSpan to={`/profile/${codeGround.user._id}`}>
+            {' '}
+            {codeGround.user.username}
+          </LinkSpan>
+        </Small>
+        <Br />
+        <Small></Small>
       </>
     );
   };
 
   return (
     <ResultFieldContainer>
-      <Link to={`/code-ground/${codeGround._id}`}>
-        <DetailsWrapper>
-          <h4>{codeGround.title}</h4>
-          <small>forked by: {codeGround.user.username}</small>
-          <small>created by: {codeGround.creator.username}</small>
-        </DetailsWrapper>
-      </Link>
+      <DetailsWrapper>
+        <Link to={`/code-ground/${codeGround._id}`}>
+          <H4>{codeGround.title}</H4>{' '}
+        </Link>
+        {displayAuthors()}
+      </DetailsWrapper>
 
       <ThumbnailWrapper>
         <StyledIframe
@@ -142,7 +246,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
       </ThumbnailWrapper>
 
       <OptionsWrapper>
-        {userLoggedIn && !userOwnsGround ? renderInteractionButtons() : null}
+        {user && !userOwnsGround ? renderInteractionButtons() : null}
         {userOwnsGround ? renderEditOptions() : null}
 
         <IconWrapper>
