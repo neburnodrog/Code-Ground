@@ -37,6 +37,7 @@ export default function LoginForm(props: LoginFormProps) {
         if (resp.hasOwnProperty('message')) {
           setErrorMessage(resp.message);
         } else {
+          console.log(resp);
           props.setUser(resp);
           props.notSavedCodeGround ? (
             <Redirect to="/code-grounds" />

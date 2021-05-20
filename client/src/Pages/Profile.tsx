@@ -43,13 +43,11 @@ const H2 = styled.h3`
 
 interface ProfileProps extends RouteComponentProps {
   user: UserDocument | null;
-  // setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
-const Profile: React.FC<ProfileProps> = (props) => {
-  const { user } = props;
+const Profile: React.FC<ProfileProps> = ({ user, ...rest }) => {
   const { userId } = useParams<{ userId: string }>();
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   const [profileUser, setProfileUser] = useState<UserDocument | null>();
 
   useEffect(() => {
@@ -62,6 +60,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
         setProfileUser(profileUser);
       })
       .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const userIsProfileOwner = () => {
@@ -103,7 +102,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
       </TabsContainer>
 
       <DashboardContainer>
-        <Dashboard profileUser={profileUser} user={user} />
+        <Dashboard profileUser={profileUser} user={user} {...rest} />
       </DashboardContainer>
     </ProfileContainer>
   );

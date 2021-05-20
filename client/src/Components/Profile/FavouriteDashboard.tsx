@@ -46,6 +46,7 @@ const FavouritesDashboard: React.FC<DashboardProps> = ({
         setCodeGrounds(codeGrounds);
       })
       .catch((err: Error) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderCards = () => {

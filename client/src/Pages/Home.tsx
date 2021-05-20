@@ -5,6 +5,7 @@ import GroundCard from '../Components/CodeGround/CodeGroundCard';
 import { CodeGroundPopulated } from '../../../src/models/CodeGround';
 import { UserDocument } from '../../../src/models/User';
 import { fetchAll } from '../services/codeground';
+import { RouteComponentProps } from 'react-router-dom';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ interface HomeState {
   option: string;
 }
 
-interface HomeProps {
+interface HomeProps extends RouteComponentProps {
   user: UserDocument | null;
 }
 
@@ -71,7 +72,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
   displayResults = () => {
     const { codeGrounds, search, option } = this.state;
-    const { user } = this.props;
+    const { user, ...rest } = this.props;
 
     let filtered;
 
@@ -106,6 +107,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
               codeGround={ground}
               liked={user ? ground.likes.includes(user._id) : false}
               favourited={user ? user.favourites.includes(ground._id) : false}
+              {...rest}
             />
           ))
           .slice(0, 6)

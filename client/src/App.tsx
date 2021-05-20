@@ -26,13 +26,12 @@ interface AppProps extends RouteComponentProps {
   user: UserDocument | null;
 }
 
-const App: FC<AppProps> = (props) => {
-  const [user, setUser] = useState(props.user);
+const App: FC<AppProps> = ({ user: UserProp, ...rest }) => {
+  const [user, setUser] = useState(UserProp);
   const [notSavedCodeGround, setNotSavedCodeGround] = useState(false);
-
   return (
     <AppContainer>
-      <NavBar user={user} setUser={setUser} />
+      <NavBar user={user} setUser={setUser} {...rest} />
 
       <Switch>
         <Route

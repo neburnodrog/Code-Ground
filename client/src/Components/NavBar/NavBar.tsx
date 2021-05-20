@@ -3,6 +3,7 @@ import { UserDocument } from '../../../../src/models/User';
 import styled from 'styled-components';
 import NavRight from './NavRight';
 import NavLeft from './NavLeft';
+import { RouteComponentProps } from 'react-router-dom';
 
 export const NavLink = styled.button`
   font-size: inherit;
@@ -34,12 +35,12 @@ const Title = styled.h2`
   color: #f4f6fc;
 `;
 
-export interface NavBarProps {
+export interface NavBarProps extends RouteComponentProps {
   user: UserDocument | null;
   setUser: Dispatch<SetStateAction<UserDocument | null>>;
 }
 
-export default function NavBar(props: NavBarProps) {
+const NavBar: React.FC<NavBarProps> = (props) => {
   return (
     <Navbar>
       <NavLeft />
@@ -47,4 +48,6 @@ export default function NavBar(props: NavBarProps) {
       <NavRight {...props} />
     </Navbar>
   );
-}
+};
+
+export default NavBar;

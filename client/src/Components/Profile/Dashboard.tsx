@@ -4,6 +4,7 @@ import GroundCard from '../CodeGround/CodeGroundCard';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
 import { UserDocument } from '../../../../src/models/User';
 import { fetchUserGrounds } from '../../services/codeground';
+import { RouteComponentProps } from 'react-router-dom';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -27,18 +28,23 @@ const GroundsContainerOuter = styled.div`
   margin-top: 2em;
 `;
 
-interface DashboardProps {
+interface DashboardProps extends RouteComponentProps {
   profileUser: UserDocument;
   user: UserDocument | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
+const Dashboard: React.FC<DashboardProps> = ({
+  profileUser,
+  user,
+  ...rest
+}) => {
   const [codeGrounds, setCodeGrounds] = useState([] as CodeGroundPopulated[]);
 
   useEffect(() => {
     fetchUserGrounds(profileUser._id)
       .then((codeGrounds: CodeGroundPopulated[]) => setCodeGrounds(codeGrounds))
       .catch((err: Error) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderCards = () => {
@@ -50,6 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ profileUser, user }) => {
         codeGround={ground}
         liked={user ? ground.likes.includes(user._id) : false}
         favourited={user ? user.favourites.includes(ground._id) : false}
+        {...rest}
       />
     ));
   };

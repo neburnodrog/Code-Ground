@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { NavLink } from './NavBar';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SignOutAlt, SignInAlt } from '@styled-icons/fa-solid';
 import { NavBarProps } from './NavBar';
 import { logout } from '../../services/auth';
@@ -26,13 +26,13 @@ const ProfileIcon = styled.img`
   }
 `;
 
-export default function NavRight(props: NavBarProps) {
+const NavRight: FC<NavBarProps> = ({ setUser, user, history }) => {
   const handleLogout = () => {
     logout()
       .then((resp) => {
         console.log(resp);
-        props.setUser(null);
-        <Redirect to="/" />;
+        setUser(null);
+        // history.push('/home');
       })
       .catch((err) => console.log(err));
   };
@@ -44,8 +44,8 @@ export default function NavRight(props: NavBarProps) {
           Log Out <SignOutAlt size={'1em'} />
         </NavLink>
 
-        <Link to={`/profile/${props.user!._id}`} style={{ marginLeft: '1em' }}>
-          <ProfileIcon src={props.user?.avatar.path} />
+        <Link to={`/profile/${user!._id}`} style={{ marginLeft: '1em' }}>
+          <ProfileIcon src={user?.avatar.path} />
         </Link>
       </>
     );
@@ -66,5 +66,7 @@ export default function NavRight(props: NavBarProps) {
     );
   };
 
-  return <NavList>{props.user ? signedInNav() : anonynousNav()}</NavList>;
-}
+  return <NavList>{user ? signedInNav() : anonynousNav()}</NavList>;
+};
+
+export default NavRight;
