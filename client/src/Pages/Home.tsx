@@ -78,23 +78,23 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
     if (option === 'title')
       filtered = codeGrounds.filter((codeGround) =>
-        codeGround.title.includes(search),
+        codeGround.title.toLowerCase().includes(search.toLowerCase()),
       );
     if (option === 'user')
       filtered = codeGrounds.filter((codeGround) =>
-        codeGround.user.username.includes(search),
+        codeGround.user.username.toLowerCase().includes(search.toLowerCase()),
       );
     if (option === 'html')
       filtered = codeGrounds.filter((codeGround) =>
-        codeGround.html.includes(search),
+        codeGround.html.toLowerCase().includes(search.toLowerCase()),
       );
     if (option === 'css')
       filtered = codeGrounds.filter((codeGround) =>
-        codeGround.css.includes(search),
+        codeGround.css.toLowerCase().includes(search.toLowerCase()),
       );
     if (option === 'js')
       filtered = codeGrounds.filter((codeGround) =>
-        codeGround.title.includes(search),
+        codeGround.title.toLowerCase().includes(search.toLowerCase()),
       );
 
     return filtered
