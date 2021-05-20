@@ -34,7 +34,7 @@ const userSchema = new mongoose_1.Schema({
         },
         cloudinaryId: { type: String },
     },
-    bookmarked: [
+    favourites: [
         {
             type: mongoose_1.Types.ObjectId,
             ref: 'CodeGround',

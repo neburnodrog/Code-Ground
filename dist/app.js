@@ -32,9 +32,13 @@ const code_ground_1 = __importDefault(require("./routes/code-ground"));
 app.use('/api/code-ground', code_ground_1.default);
 const auth_1 = __importDefault(require("./routes/auth"));
 app.use('/api/auth', auth_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, './client')));
+const cloudinary_1 = __importDefault(require("./routes/cloudinary"));
+app.use('/api/cloudinary', cloudinary_1.default);
+const users_1 = __importDefault(require("./routes/users"));
+app.use('/api/users', users_1.default);
+app.use(express_1.default.static(path_1.default.join(__dirname, '/client')));
 app.use((req, res) => {
-    res.sendFile(__dirname + './client/index.html');
+    res.sendFile(__dirname + '/client/index.html');
 });
 const error_handling_1 = __importDefault(require("./error-handling"));
 error_handling_1.default(app);
