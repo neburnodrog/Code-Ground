@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { CodeGroundPopulated } from '../../../../src/models/CodeGround';
-// import { UserDocument } from '../../../../src/models/User';
 import {
   CodeBranch,
   Heart,
