@@ -25,7 +25,6 @@ router.get('/:userId/favourites/', (req, res, next) => {
             res.status(400).json({ message: 'User not found' });
             return;
         }
-        console.log(user.favourites);
         res.status(200).json(user.favourites);
     })
         .catch((err) => next(err));
