@@ -27,7 +27,7 @@ export const addToFavourites = (userId: string, codeGroundId: string) => {
 
 export const removeFromFavourites = (userId: string, codeGroundId: string) => {
   return axios
-    .get(`/api/users/${userId}/favourites/${codeGroundId}`)
-    .then((res) => console.log(res.data))
+    .delete(`/api/users/${userId}/favourites/${codeGroundId}`)
+    .then((res) => res.data)
     .catch((err) => console.log(err));
 };

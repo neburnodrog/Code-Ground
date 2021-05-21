@@ -165,7 +165,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
     if (favourite) {
       setFavourite(false);
       removeFromFavourites(user!._id, codeGround._id)
-        .then((resp) => console.log(resp))
+        .then((resp) => {})
         .catch((err) => console.log(err));
     } else {
       setFavourite(true);
