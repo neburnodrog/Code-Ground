@@ -15,7 +15,6 @@ export const signup = (username: string, email: string, password: string) => {
 };
 
 export const login = (username: string, password: string) => {
-  console.log('login handler service');
   return axios
     .post('/api/auth/login', { username, password })
     .then((resp: LoginResponse) => {
