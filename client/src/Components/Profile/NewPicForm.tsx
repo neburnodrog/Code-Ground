@@ -11,6 +11,7 @@ import Cloudinary from '../../services/cloudinary';
 import axios from 'axios';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Spinner } from '@styled-icons/fa-solid';
 
 interface NewPicFormProps extends RouteComponentProps {
   user: UserDocument;
@@ -19,6 +20,7 @@ interface NewPicFormProps extends RouteComponentProps {
 
 const NewPicForm: FC<NewPicFormProps> = ({ user, setUser, history }) => {
   const [file, setFile] = useState<File>();
+  const [uploading, setUploading] = useState(false);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -31,6 +33,8 @@ const NewPicForm: FC<NewPicFormProps> = ({ user, setUser, history }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setUploading(true);
+
     const pic = new FormData();
     if (file) {
       pic.append('pic', file, file.name);
@@ -42,7 +46,8 @@ const NewPicForm: FC<NewPicFormProps> = ({ user, setUser, history }) => {
             .then((resp) => {
               const user: UserDocument = resp.data;
               setUser(user);
-              history.push('/profile');
+              setUploading(false);
+              history.push(`/profile/${user._id}`);
             })
             .catch((err) =>
               console.log('Error while retrieving the new user instance'),
@@ -53,6 +58,14 @@ const NewPicForm: FC<NewPicFormProps> = ({ user, setUser, history }) => {
         });
     } else {
       return;
+    }
+  };
+
+  const renderButtonText = () => {
+    if (uploading) {
+      return <Spinner size={'1.2em'} />;
+    } else {
+      return 'Upload';
     }
   };
 
@@ -67,7 +80,7 @@ const NewPicForm: FC<NewPicFormProps> = ({ user, setUser, history }) => {
           onChange={handleFileChange}
           required
         />
-        <Button type="submit">Upload Profile Pic</Button>
+        <Button type="submit">{renderButtonText()}</Button>
       </Form>
     </div>
   );

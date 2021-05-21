@@ -61,6 +61,7 @@ export default function SearchBar(props: SearchBarProps) {
         type="text"
         name="search"
         id="search"
+        placeholder="Search here"
         value={props.search}
         onChange={handleInputChange}
       />
