@@ -141,4 +141,14 @@ router.delete(
   },
 );
 
+router.post(
+  '/:id/comments/add',
+  (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+
+    CodeGround.findOneAndUpdate();
+  },
+);
+
 export default router;
