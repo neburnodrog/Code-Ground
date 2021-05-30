@@ -37,6 +37,7 @@ const codeGroundSchema = new Schema(
           type: String,
           maxLength: 200,
           required: true,
+          minLength: 1,
         },
         user: {
           type: Types.ObjectId,

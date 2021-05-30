@@ -142,12 +142,43 @@ router.delete(
 );
 
 router.post(
-  '/:id/comments/add',
+  '/:id/comments/:userId/add',
   (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { id, userId } = req.params;
     const { comment } = req.body;
 
-    CodeGround.findOneAndUpdate();
+    console.log({ id, userId });
+    console.log({ comment });
+
+    CodeGround.findOneAndUpdate(
+      { _id: id },
+      { $addToSet: { comments: { comment, user: userId, likes: [] } } },
+      { new: true },
+    )
+      .then((ground) => {
+        console.log(ground);
+        if (!ground) res.status(400).json({ message: 'Codeground not found' });
+        else res.status(200).json({ message: 'Codeground commented' });
+      })
+      .catch((err) => next(err));
+  },
+);
+
+router.delete(
+  '/:id/comments/:commentId/delete',
+  (req: Request, res: Response, next: NextFunction) => {
+    const { commentId, id } = req.params;
+
+    CodeGround.findOneAndUpdate(
+      { _id: id },
+      { $pull: { comments: { _id: commentId } } },
+      { new: true },
+    )
+      .then((ground) => {
+        if (!ground) res.status(400).json({ message: 'Codeground not found' });
+        else res.status(200).json({ message: 'Codeground deleted' });
+      })
+      .catch((err) => next(err));
   },
 );
 
