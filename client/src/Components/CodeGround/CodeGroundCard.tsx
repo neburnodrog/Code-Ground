@@ -23,6 +23,8 @@ import { UserDocument } from '../../../../src/models/User';
 const ResultFieldContainer = styled.article`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
   width: 25vw;
   background: #2b2d3b;
   margin: 1em;
@@ -73,6 +75,7 @@ const StyledIframe = styled.iframe`
 `;
 
 const IconWrapper = styled(WrapperButton)`
+  font-size: 1rem;
   margin-top: 0em;
   background: #131522;
   border-radius: 0.2em;
