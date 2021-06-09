@@ -44,7 +44,7 @@ const NavBar: React.FC<NavBarProps> = (props) => {
   return (
     <Navbar>
       <NavLeft />
-      <Title>Codeground</Title>
+      <Title>Codegrounds</Title>
       <NavRight {...props} />
     </Navbar>
   );
