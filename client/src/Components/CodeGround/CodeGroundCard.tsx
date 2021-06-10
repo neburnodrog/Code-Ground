@@ -23,7 +23,6 @@ import { UserDocument } from '../../../../src/models/User';
 const ResultFieldContainer = styled.article`
   display: flex;
   flex-flow: column;
-  flex: 1 0 auto;
   width: 25vw;
   background: #2b2d3b;
   margin: 1em;
