@@ -102,3 +102,20 @@ export const forkCodeGround = (
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
+
+export const commentCodeGround = (codeGroundId: string, userId: string) => {
+  return axios
+    .get(`/api/code-ground/${codeGroundId}/comments/${userId}`)
+    .then((resp: AxiosResponse) => console.log(resp.data))
+    .catch((err) => err);
+};
+
+export const uncommentCodeGround = (
+  codeGroundId: string,
+  commentId: string,
+) => {
+  return axios
+    .delete(`/api/code-ground/${codeGroundId}/comments/${commentId}`)
+    .then((resp: AxiosResponse) => console.log(resp.data))
+    .catch((err) => err);
+};

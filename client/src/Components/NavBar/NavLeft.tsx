@@ -9,7 +9,6 @@ const Logo = styled.img`
   margin-left: 2em;
   margin-right: 1.5em;
   border-radius: 50%;
-  border: 2px solid transparent;
 `;
 
 const NavList = styled.div`

@@ -22,9 +22,8 @@ import { UserDocument } from '../../../../src/models/User';
 
 const ResultFieldContainer = styled.article`
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 0;
+  flex-flow: column;
+  flex: 1 0 auto;
   width: 25vw;
   background: #2b2d3b;
   margin: 1em;
@@ -75,7 +74,7 @@ const StyledIframe = styled.iframe`
 `;
 
 const IconWrapper = styled(WrapperButton)`
-  font-size: 1rem;
+  font-size: 0.7rem;
   margin-top: 0em;
   background: #131522;
   border-radius: 0.2em;

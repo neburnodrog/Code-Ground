@@ -25,6 +25,10 @@ export const ResultsContainerOuter = styled.div`
   margin: 0em;
   background: #2b2d3b;
   border-radius: 2mm;
+
+  @media (max-width: 768px) {
+    width: 60%;
+  }
 `;
 
 const SearchBarContainer = styled(SearchBar)`

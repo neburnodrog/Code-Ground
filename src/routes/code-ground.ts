@@ -142,7 +142,7 @@ router.delete(
 );
 
 router.post(
-  '/:id/comments/:userId/add',
+  '/:id/comments/:userId',
   (req: Request, res: Response, next: NextFunction) => {
     const { id, userId } = req.params;
     const { comment } = req.body;
@@ -165,7 +165,7 @@ router.post(
 );
 
 router.delete(
-  '/:id/comments/:commentId/delete',
+  '/:id/comments/:commentId',
   (req: Request, res: Response, next: NextFunction) => {
     const { commentId, id } = req.params;
 
@@ -176,7 +176,7 @@ router.delete(
     )
       .then((ground) => {
         if (!ground) res.status(400).json({ message: 'Codeground not found' });
-        else res.status(200).json({ message: 'Codeground deleted' });
+        else res.status(200).json({ message: 'Comment deleted' });
       })
       .catch((err) => next(err));
   },

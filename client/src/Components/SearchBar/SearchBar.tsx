@@ -24,21 +24,22 @@ const Input = styled.input`
   border-radius: 0.2em;
   margin-right: 1em;
   font-size: 1rem;
-  &:focus {
-    border: 0px !important;
-    box-shadow: 0px 0px 0px 0px !important;
-  }
 `;
 
 const Select = styled.select`
-  font-size: 1em;
+  font-size: 0.8em;
   color: inherit;
-  margin-left: 1em;
-  padding: 0.2em 0.4em;
+  margin-left: 0.5em;
+  padding: 0.3em 0.5em;
   overflow: hidden;
   border-radius: 0.2em;
   background: #131522;
   border: 0px;
+`;
+
+const Label = styled.label`
+  font-size: 0.8em;
+  margin-right: 0;
 `;
 
 interface SearchBarProps {
@@ -65,7 +66,21 @@ export default function SearchBar(props: SearchBarProps) {
         value={props.search}
         onChange={handleInputChange}
       />
-      <label htmlFor="category">Search by:</label>
+      <Label htmlFor="filter">Order by:</Label>
+      <Select
+        name="filter"
+        id="filter"
+        onChange={handleSelectChange}
+        defaultValue="last added"
+        style={{ marginRight: '1em' }}
+      >
+        <option value="last added">Most recent</option>
+        <option value="user">Username</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="js">JS</option>
+      </Select>
+      <Label htmlFor="category">Search by:</Label>
       <Select
         name="category"
         id="category"
