@@ -6,6 +6,6 @@
 - [Codegrounds](https://codegrounds.herokuapp.com/) gets its food from a MongoDB database. 
 - [Codegrounds](https://codegrounds.herokuapp.com/) looks like this:
 ---
-![home](https://res.cloudinary.com/doh6rpdke/image/upload/h_400,w_800/v1623423513/Screenshot_from_2021-06-11_16-53-36_qu2x2q.png)
+![home](https://res.cloudinary.com/doh6rpdke/image/upload/w_800/v1623423513/Screenshot_from_2021-06-11_16-53-36_qu2x2q.png)
 ---
-![editor](https://res.cloudinary.com/doh6rpdke/image/upload/h_400,w_800/v1623423512/Screenshot_from_2021-06-11_16-56-23_wkshlq.png)
+![editor](https://res.cloudinary.com/doh6rpdke/image/upload/w_800/v1623423512/Screenshot_from_2021-06-11_16-56-23_wkshlq.png)
