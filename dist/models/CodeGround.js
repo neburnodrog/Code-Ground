@@ -36,6 +36,7 @@ const codeGroundSchema = new mongoose_1.Schema({
                 type: String,
                 maxLength: 200,
                 required: true,
+                minLength: 1,
             },
             user: {
                 type: mongoose_1.Types.ObjectId,

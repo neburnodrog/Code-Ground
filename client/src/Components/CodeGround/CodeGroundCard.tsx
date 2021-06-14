@@ -30,6 +30,12 @@ const ResultFieldContainer = styled.article`
   border: 2px solid #f4f6fc;
   border-radius: 0.4em;
   box-shadow: 0.7em 0.7em 0.5em 0em #131522;
+
+  @media (max-width: 768px) {
+    flex-grow: 1;
+    margin: 3em;
+    font-size: 2em;
+  }
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -46,6 +52,9 @@ const DetailsWrapper = styled.div`
   border-top-left-radius: 0.3em;
   border-top-right-radius: 0.3em;
   padding: 0.5em 0em;
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const OptionsWrapper = styled.div`
@@ -79,6 +88,10 @@ const IconWrapper = styled(WrapperButton)`
   border-radius: 0.2em;
   padding: 0.5em;
   margin: 0em 0.2em;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const Span = styled.span`
@@ -199,11 +212,6 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
   const renderInteractionButtons = () => {
     return (
       <>
-        <IconWrapper onClick={handleLike}>
-          <StyledThumbsUp size="1.2em" liked={like} />
-          <Span>{calcNumberOfLikes()}</Span>
-        </IconWrapper>
-
         <IconWrapper onClick={handleFavourite}>
           <StyledHeart size="1.2em" favourited={favourite} />
         </IconWrapper>
@@ -277,6 +285,11 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
       </ThumbnailWrapper>
 
       <OptionsWrapper>
+        <IconWrapper onClick={handleLike}>
+          <StyledThumbsUp size="1.2em" liked={like} />
+          <Span>{calcNumberOfLikes()}</Span>
+        </IconWrapper>
+
         {!user || !userOwnsGround ? renderInteractionButtons() : null}
         {userOwnsGround ? renderEditOptions() : null}
 

@@ -27,7 +27,7 @@ export const ResultsContainerOuter = styled.div`
   border-radius: 2mm;
 
   @media (max-width: 768px) {
-    width: 60%;
+    width: 95%;
   }
 `;
 

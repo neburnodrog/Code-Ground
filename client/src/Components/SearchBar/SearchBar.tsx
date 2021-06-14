@@ -12,6 +12,12 @@ const StyledSearchBar = styled.div`
   display: flex;
   align-items: center;
   border-radius: 0.2em;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 2em;
+  }
 `;
 
 const Input = styled.input`
@@ -24,6 +30,11 @@ const Input = styled.input`
   border-radius: 0.2em;
   margin-right: 1em;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 1em;
+    margin: 0.2em 0em 0.6em 0em;
+  }
 `;
 
 const Select = styled.select`
@@ -35,11 +46,21 @@ const Select = styled.select`
   border-radius: 0.2em;
   background: #131522;
   border: 0px;
+
+  @media (max-width: 768px) {
+    font-size: 1em;
+    margin: 0.2em 0em 0.2em 0em;
+  }
 `;
 
 const Label = styled.label`
   font-size: 0.8em;
-  margin-right: 0;
+  margin: 0em 0em 0em 1em;
+
+  @media (max-width: 768px) {
+    font-size: 1em;
+    margin: 0.2em 0em 0.2em 0em;
+  }
 `;
 
 interface SearchBarProps {
@@ -72,7 +93,7 @@ export default function SearchBar(props: SearchBarProps) {
         id="filter"
         onChange={handleSelectChange}
         defaultValue="last added"
-        style={{ marginRight: '1em' }}
+        //style={{ marginRight: '1em' }}
       >
         <option value="last added">Most recent</option>
         <option value="user">Username</option>
