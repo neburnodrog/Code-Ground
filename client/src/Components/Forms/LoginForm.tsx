@@ -1,5 +1,7 @@
 import React, {
   useState,
+  useEffect,
+  useRef,
   FormEvent,
   ChangeEvent,
   Dispatch,
@@ -28,6 +30,15 @@ export default function LoginForm(props: LoginFormProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+
+    inputRef.current.focus();
+  }, []);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +76,7 @@ export default function LoginForm(props: LoginFormProps) {
         <InputGroup>
           <Label htmlFor="username">Username</Label>
           <Input
+            ref={inputRef}
             type="text"
             name="username"
             id="username"

@@ -1,4 +1,11 @@
-import React, { useState, FormEvent, FocusEvent, ChangeEvent } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  FormEvent,
+  FocusEvent,
+  ChangeEvent,
+} from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import './forms.css';
 import { signup } from '../../services/auth';
@@ -31,6 +38,12 @@ export default function SignUpForm(props: RouteComponentProps) {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<Errors>({});
   const [errorMessage, setErrorMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.focus();
+  }, []);
 
   const validate = (): Errors => {
     const currentErrors = { ...errors };
@@ -105,6 +118,7 @@ export default function SignUpForm(props: RouteComponentProps) {
         <InputGroup>
           <Label htmlFor="username">Username</Label>
           <Input
+            ref={inputRef}
             type="text"
             name="username"
             id="username"
