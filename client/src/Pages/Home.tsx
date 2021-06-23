@@ -45,6 +45,8 @@ interface HomeState {
   codeGrounds: CodeGroundPopulated[];
   search: string;
   option: string;
+  order: string;
+  // order: 'recent' | 'oldest' | 'liked' | 'commented';
 }
 
 interface HomeProps extends RouteComponentProps {
@@ -56,6 +58,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
     codeGrounds: [] as CodeGroundPopulated[],
     search: '',
     option: 'title',
+    order: 'recent',
   };
 
   componentDidMount() {
@@ -66,12 +69,53 @@ export default class Home extends React.Component<HomeProps, HomeState> {
       .catch((err) => console.log(err));
   }
 
+  componentDidUpdate(prevProps: HomeProps, prevState: HomeState) {
+    if (prevState.order !== this.state.order) {
+      this.sortResults(this.state.order);
+    }
+  }
+
   handleSearch = (value: string) => {
     this.setState({ search: value });
   };
 
   handleSelect = (value: string) => {
     this.setState({ option: value });
+  };
+
+  handleOrder = (value: string) => {
+    this.setState({ order: value });
+  };
+
+  sortResults = (orderBy: HomeState['order']) => {
+    const { codeGrounds } = this.state;
+    let ordered;
+
+    switch (orderBy) {
+      case 'recent':
+        ordered = codeGrounds.sort((a, b) => {
+          if (a.createdAt < b.createdAt) return 1;
+          return -1;
+        });
+        break;
+      case 'oldest':
+        ordered = codeGrounds.sort((a, b) => {
+          if (a.createdAt < b.createdAt) return -1;
+          return 1;
+        });
+        break;
+      case 'liked':
+        ordered = codeGrounds.sort((a, b) => b.likes.length - a.likes.length);
+        break;
+      case 'commented':
+        ordered = codeGrounds.sort(
+          (a, b) => b.comments.length - a.comments.length,
+        );
+        break;
+    }
+    if (ordered) {
+      this.setState({ codeGrounds: ordered });
+    }
   };
 
   displayResults = () => {
@@ -128,7 +172,8 @@ export default class Home extends React.Component<HomeProps, HomeState> {
         <SearchBarContainer
           search={search}
           handleSearch={this.handleSearch}
-          handleSelect={this.handleSelect}
+          handleSearchBy={this.handleSelect}
+          handleOrder={this.handleOrder}
         />
         <ResultsContainerOuter>{this.displayResults()}</ResultsContainerOuter>
       </HomeContainer>

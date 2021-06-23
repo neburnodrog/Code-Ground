@@ -65,7 +65,8 @@ const Label = styled.label`
 
 interface SearchBarProps {
   handleSearch: (value: string) => void;
-  handleSelect: (value: string) => void;
+  handleSearchBy: (value: string) => void;
+  handleOrder: (value: string) => void;
   search: string;
 }
 
@@ -73,8 +74,12 @@ export default function SearchBar(props: SearchBarProps) {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     props.handleSearch(e.currentTarget.value);
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    props.handleSelect(e.currentTarget.value);
+  const handleSearchByChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    props.handleSearchBy(e.currentTarget.value);
+  };
+
+  const handleOrderByChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    props.handleOrder(e.currentTarget.value);
   };
 
   return (
@@ -91,21 +96,20 @@ export default function SearchBar(props: SearchBarProps) {
       <Select
         name="filter"
         id="filter"
-        onChange={handleSelectChange}
+        onChange={handleOrderByChange}
         defaultValue="last added"
         //style={{ marginRight: '1em' }}
       >
-        <option value="last added">Most recent</option>
-        <option value="user">Username</option>
-        <option value="html">HTML</option>
-        <option value="css">CSS</option>
-        <option value="js">JS</option>
+        <option value="recent">Most Recent</option>
+        <option value="oldest">Oldest First</option>
+        <option value="liked">Most Liked</option>
+        <option value="commented">Most Commented</option>
       </Select>
       <Label htmlFor="category">Search by:</Label>
       <Select
         name="category"
         id="category"
-        onChange={handleSelectChange}
+        onChange={handleSearchByChange}
         defaultValue="title"
       >
         <option value="title">Title</option>
