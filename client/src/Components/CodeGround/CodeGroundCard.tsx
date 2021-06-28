@@ -277,6 +277,7 @@ const GroundCard: React.FC<GroundCardProps> = (props) => {
 
       <ThumbnailWrapper>
         <StyledIframe
+          loading="lazy"
           title={codeGround.title}
           srcDoc={srcDoc}
           sandbox="allow-scripts"
